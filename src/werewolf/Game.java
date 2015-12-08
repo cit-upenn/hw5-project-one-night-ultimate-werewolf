@@ -99,6 +99,11 @@ public class Game {
 					for(int i = 0; i < roles.size(); i++) {
 						if(roles.get(i).getID() == 2) {
 							choice = players.get(i).wakeUp(numOfPlayers);
+							if(choice.get(0) == 1) {
+								
+							} else {
+								
+							}
 						}
 					}
 					turn = 3;
@@ -118,6 +123,7 @@ public class Game {
 							break;
 						}
 					}
+					turn = 4;
 					break;
 				case 4:
 					System.out.println("Robber, close your eyes. \n Troublemaker, wake up. You may exchange cards between two other players");
@@ -134,6 +140,7 @@ public class Game {
 							players.get(choice.get(1) - 1).assignRole(temp);
 						}
 					}
+					turn = 5;
 					break;
 				case 5:
 					System.out.println("Troublemaker, close your eyes");
