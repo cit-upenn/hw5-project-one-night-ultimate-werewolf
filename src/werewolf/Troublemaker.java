@@ -4,30 +4,30 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Troublemaker implements Role {
-	private ArrayList<Integer> choice;
+	private ArrayList<Integer> choice = new ArrayList<Integer>();
 	private int c;
 
 	@Override
-	public int getID() {
-		return 4;
+	public String getRoleStr() {
+		return "Troublemaker";
 	}
 
 	@Override
-	public ArrayList<Integer> wakeUp(int numOfPlayers, int ID) {
+	public ArrayList<Integer> wakeUp(int numOfPlayers, int ID, Scanner in) {
 		System.out.println("Whose cards would you like to swap?");
 		for(int i = 0; i < numOfPlayers; i++) {
-			if(i != ID) { //print Player # options except for the robber himself
-				System.out.println(i + " ");
+			if(i+1 != ID) { //print Player # options except for the robber himself
+				System.out.println((i+1));
 			}
 		}
-		Scanner in = new Scanner(System.in);
+//		Scanner in = new Scanner(System.in);
 		System.out.println("Enter first card");
 		c = Integer.parseInt(in.nextLine());
 		choice.add(c);
 		System.out.println("Enter second card");
 		c = Integer.parseInt(in.nextLine());
 		choice.add(c);
-		in.close();
+//		in.close();
 		
 		return choice;
 		

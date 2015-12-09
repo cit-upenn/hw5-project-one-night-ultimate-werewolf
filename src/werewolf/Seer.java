@@ -4,26 +4,26 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Seer implements Role {
-	private ArrayList<Integer> choice;
+	private ArrayList<Integer> choice = new ArrayList<Integer>();
 	private int c;
 	
 	@Override
-	public int getID() {
-		return 2;
+	public String getRoleStr() {
+		return "Seer";
 	}
 	
 	@Override
-	public ArrayList<Integer> wakeUp(int numOfPlayers, int ID) {
+	public ArrayList<Integer> wakeUp(int numOfPlayers, int ID, Scanner in) {
 		System.out.println("Enter 1 to look at another player's card; 2 to look at any two cards in the center");
-		Scanner in = new Scanner(System.in);
+//		Scanner in = new Scanner(System.in);
 		c = Integer.parseInt(in.nextLine());
 		choice.add(c);
 		
 		if(c == 1) {
 			System.out.println("Which player's?");
 			for(int i = 0; i < numOfPlayers; i++) {
-				if(i != ID) { //print Player # options except for the robber himself
-					System.out.println(i + " ");
+				if(i+1 != ID) { //print Player # options except for the robber himself
+					System.out.println((i+1));
 				}
 			}
 			c = Integer.parseInt(in.nextLine());
@@ -38,7 +38,7 @@ public class Seer implements Role {
 			c = Integer.parseInt(in.nextLine());
 			choice.add(c);
 		}
-		in.close();
+//		in.close();
 
 		return choice;
 	}
