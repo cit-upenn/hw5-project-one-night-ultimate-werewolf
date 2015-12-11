@@ -48,7 +48,6 @@ public class WerewolfGUI extends JPanel {
 		add(centerPanel, BorderLayout.CENTER);
 		add(bottomPanel, BorderLayout.SOUTH);
 	}
-
 	public void display () {
 		JFrame myFrame = new JFrame("One Night Ultimate Werewolf");
 		myFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
