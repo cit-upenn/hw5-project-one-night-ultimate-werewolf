@@ -18,6 +18,7 @@ import javax.swing.SwingConstants;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.ImageIcon;
+import javax.swing.BoxLayout;
 
 public class WindowBuilderFun {
 
@@ -56,37 +57,13 @@ public class WindowBuilderFun {
 		frame.setBackground(new Color(25, 25, 112));
 		frame.setBounds(100, 100, 1034, 775);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.getContentPane().setLayout(new BoxLayout(frame.getContentPane(), BoxLayout.X_AXIS));
 		
 		JLabel lblPlayer = new JLabel();
 		lblPlayer.setIcon(new ImageIcon("/Users/gracelee/Desktop/werewolfcard.jpg"));
-		
-		JLabel lblNewLabel = new JLabel("New label");
-		
-		//getting group layout
-		GroupLayout groupLayout = new GroupLayout(frame.getContentPane());
-		groupLayout.setHorizontalGroup(
-			groupLayout.createParallelGroup(Alignment.LEADING)
-				.addGroup(groupLayout.createSequentialGroup()
-					.addGap(23)
-					.addComponent(lblPlayer)
-					.addGap(114)
-					.addComponent(lblNewLabel)
-					.addContainerGap(703, Short.MAX_VALUE))
-		);
-		groupLayout.setVerticalGroup(
-			groupLayout.createParallelGroup(Alignment.LEADING)
-				.addGroup(groupLayout.createSequentialGroup()
-					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addGroup(groupLayout.createSequentialGroup()
-							.addContainerGap()
-							.addComponent(lblPlayer, GroupLayout.PREFERRED_SIZE, 213, GroupLayout.PREFERRED_SIZE))
-						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(107)
-							.addComponent(lblNewLabel)))
-					.addContainerGap(534, Short.MAX_VALUE))
-		);
-		frame.getContentPane().setLayout(groupLayout);
-		
+		frame.getContentPane().add(lblPlayer);
+		lblPlayer.setHorizontalAlignment(JLabel.CENTER);
+		lblPlayer.setVerticalAlignment(JLabel.CENTER);
 //		JPanel panel = new JPanel();
 //		
 //		JLabel lblVillager = new JLabel("Villager ");
