@@ -50,6 +50,14 @@ public class WerewolfGUI extends JPanel {
 		
 		setVisible(true);
 	}
+	
+	public void addPlayerCardTop(int numOfPlayers) {
+		int i;
+		for (i = 0; i < numOfPlayers; i++) {
+			screenCard = new JLabel(new ImageIcon("/Users/gracelee/Desktop/werewolfcard.jpg"));
+			topPanel.add(screenCard);
+		}
+	}
 //	public void display () {
 //		JFrame myFrame = new JFrame("One Night Ultimate Werewolf");
 //		myFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
