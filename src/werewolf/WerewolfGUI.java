@@ -47,19 +47,21 @@ public class WerewolfGUI extends JPanel {
 		add(topPanel, BorderLayout.NORTH);
 		add(centerPanel, BorderLayout.CENTER);
 		add(bottomPanel, BorderLayout.SOUTH);
+		
+		setVisible(true);
 	}
-	public void display () {
-		JFrame myFrame = new JFrame("One Night Ultimate Werewolf");
-		myFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-   		myFrame.setContentPane(this);
-    	myFrame.setPreferredSize(new Dimension(800,650));
-
-    	myFrame.pack();
-    	myFrame.setVisible(true);
-	}
-
-	public static void main(String[] args) {
-		WerewolfGUI gui = new WerewolfGUI();
-		gui.display();
-	}
+//	public void display () {
+//		JFrame myFrame = new JFrame("One Night Ultimate Werewolf");
+//		myFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//   		myFrame.setContentPane(this);
+//    	myFrame.setPreferredSize(new Dimension(800,650));
+//
+//    	myFrame.pack();
+//    	myFrame.setVisible(true);
+//	}
+//
+//	public static void main(String[] args) {
+//		WerewolfGUI gui = new WerewolfGUI();
+//		gui.display();
+//	}
 }

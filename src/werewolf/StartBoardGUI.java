@@ -6,7 +6,7 @@ import java.util.*;
 
 public class StartBoardGUI extends JPanel {
 	
-	JFrame frame;
+//	JFrame frame;
 	JLabel topLabel;
 	JPanel topPanel;
 	JPanel centerPanel;
@@ -15,9 +15,11 @@ public class StartBoardGUI extends JPanel {
 	JButton fiveButton;
 	
 	public StartBoardGUI () {
-		frame = new JFrame("One Night Ultimate Werewolf");
-		frame.setLayout(new BorderLayout());
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//		frame = new JFrame("One Night Ultimate Werewolf");
+//		frame.setLayout(new BorderLayout());
+//		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		setLayout(new BorderLayout());
 		
 		topLabel = new JLabel("Click the number of players.");
 		topPanel = new JPanel();
@@ -34,17 +36,22 @@ public class StartBoardGUI extends JPanel {
 		centerPanel.add(fourButton);
 		centerPanel.add(fiveButton);
 		
-		frame.add(topPanel, BorderLayout.NORTH);
-		frame.add(centerPanel, BorderLayout.CENTER);
+		add(topPanel, BorderLayout.NORTH);
+		add(centerPanel, BorderLayout.CENTER);
 		
-		frame.setSize(800, 650);
-		frame.setVisible(true);
+		setVisible(true);
+		
+//		frame.add(topPanel, BorderLayout.NORTH);
+//		frame.add(centerPanel, BorderLayout.CENTER);
+		
+//		frame.setSize(800, 650);
+//		frame.setVisible(true);
 	}
 	
-	public static void main(String[] args) {
-		StartBoardGUI startgui = new StartBoardGUI();
-		
-	}
+//	public static void main(String[] args) {
+//		StartBoardGUI startgui = new StartBoardGUI();
+//		
+//	}
 	
 
 }
