@@ -12,25 +12,27 @@ public class WerewolfGUI extends JPanel {
 	JLabel screenCard = new JLabel();
 	JLabel screenCard2 = new JLabel();
 	RoleCard rolecard = new RoleCard();
+//	RoleCountdown rc;
 
 	public WerewolfGUI () {
 		topPanel.setLayout(new FlowLayout());
-//		centerPanel.setLayout(new BorderLayout());
 		centerPanel.setLayout(new FlowLayout());
-//		centerPanel.setAlignment(FlowLayout.CENTER);
 		bottomPanel.setLayout(new FlowLayout());
 
-		screenCard.setIcon(new ImageIcon("/Users/gracelee/Desktop/werewolfcard.jpg"));
-//		screenCard2.setIcon(new ImageIcon("/Users/gracelee/Desktop/werewolfcard.jpg"));
-
+		screenCard.setIcon(new ImageIcon("werewolfcard.jpg"));
 		topPanel.add(screenCard);
-		screenCard = new JLabel(new ImageIcon("/Users/gracelee/Desktop/werewolfcard.jpg"));
+		screenCard = new JLabel(new ImageIcon("werewolfcard.jpg"));
 		topPanel.add(screenCard);
-		screenCard = new JLabel(new ImageIcon("/Users/gracelee/Desktop/werewolfcard.jpg"));
+		
+		screenCard = new JLabel(new ImageIcon("werewolfcard.jpg"));
 		centerPanel.add(screenCard); //figure out how to center these cards
+		screenCard = new JLabel(new ImageIcon("werewolfcard.jpg"));
+		centerPanel.add(screenCard);
+		screenCard = new JLabel(new ImageIcon("werewolfcard.jpg"));
+		centerPanel.add(screenCard);
 		
 //		centerPanel.add(screenCard, BorderLayout.WEST);
-		screenCard = new JLabel(new ImageIcon("/Users/gracelee/Desktop/werewolfcard.jpg"));
+		screenCard = new JLabel(new ImageIcon("werewolfcard.jpg"));
 //		centerPanel.add(screenCard, BorderLayout.CENTER);
 //		screenCard = new JLabel(new ImageIcon("/Users/gracelee/Desktop/werewolfcard.jpg"));
 //		centerPanel.add(screenCard, BorderLayout.EAST);
@@ -47,20 +49,44 @@ public class WerewolfGUI extends JPanel {
 		add(topPanel, BorderLayout.NORTH);
 		add(centerPanel, BorderLayout.CENTER);
 		add(bottomPanel, BorderLayout.SOUTH);
+		
+		revealRoles();
+		
+		setVisible(true);
+		
+		
 	}
-
-	public void display () {
-		JFrame myFrame = new JFrame("One Night Ultimate Werewolf");
-		myFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-   		myFrame.setContentPane(this);
-    	myFrame.setPreferredSize(new Dimension(800,650));
-
-    	myFrame.pack();
-    	myFrame.setVisible(true);
+	
+	public void addPlayerCardTop() {
+		screenCard = new JLabel(new ImageIcon("werewolfcard.jpg"));
+		topPanel.add(screenCard);
 	}
-
-	public static void main(String[] args) {
-		WerewolfGUI gui = new WerewolfGUI();
-		gui.display();
+	
+	public void addPlayerCardBottom(int numPlayers) {
+		for(int i = 0; i < numPlayers - 3; i++) {
+			screenCard = new JLabel(new ImageIcon("werewolfcard.jpg"));
+			bottomPanel.add(screenCard);
+		}
+	
 	}
+	
+	public void revealRoles() {
+		add(new RoleCountdown(), BorderLayout.EAST);
+	}
+	
+	
+//	public void display () {
+//		JFrame myFrame = new JFrame("One Night Ultimate Werewolf");
+//		myFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//   		myFrame.setContentPane(this);
+//    	myFrame.setPreferredSize(new Dimension(800,650));
+//
+//    	myFrame.pack();
+//    	myFrame.setVisible(true);
+//	}
+//
+//	public static void main(String[] args) {
+//		WerewolfGUI gui = new WerewolfGUI();
+//		gui.display();
+//	}
 }

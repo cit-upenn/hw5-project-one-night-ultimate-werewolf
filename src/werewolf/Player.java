@@ -28,7 +28,6 @@ public class Player {
 		return origRole.wakeUp(numOfPlayers, ID, in);
 	}
 	
-	//
 	public int getID() {
 		return ID;
 	}
