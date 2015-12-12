@@ -43,4 +43,8 @@ public class Player {
 	public String getOrigRoleStr() {
 		return origRoleStr;
 	}
+	
+	public String getImage() {
+		return role.imageFile();
+	}
 }
