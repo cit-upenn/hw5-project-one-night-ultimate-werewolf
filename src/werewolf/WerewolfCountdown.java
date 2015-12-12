@@ -1,5 +1,9 @@
+/**
+ * This creates a 5:00 timer for the Day Phase of ONUW.
+ */
 package werewolf;
 
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.event.*;
@@ -9,18 +13,20 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.Timer;
 
-
-
 public class WerewolfCountdown extends JFrame {
 	
-	long fiveMinutes = 5000;
-	final java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("mm :ss");
-	final JLabel clock = new JLabel(sdf.format(new Date(fiveMinutes)));
+	long fiveMinutes = 300000;
+	java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("mm :ss");
+	JLabel clock = new JLabel(sdf.format(new Date(fiveMinutes)));
 	int x = 0;
 	int times = 2; //one less than what we want
 	Timer countdown;
 	
 	public WerewolfCountdown() {
+		fiveMinutes = 300000;
+		sdf = new java.text.SimpleDateFormat("mm :ss");
+		clock = new JLabel(sdf.format(new Date(fiveMinutes)));
+		clock.setFont(new Font("Copperplate Gothic Bold", Font.PLAIN, 12));
 		setLayout(new GridLayout(2,2, 5, 5)) ;
 		
 		add(clock);

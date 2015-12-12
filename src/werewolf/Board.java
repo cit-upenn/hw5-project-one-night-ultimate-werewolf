@@ -49,7 +49,9 @@ public class Board extends JPanel {
 	private Role temp, temp2;
 	private String name;
 	private int switchClicker = 0;
+	private boolean status = true;
 	Timer robberTimer;
+	private boolean gameInProgress = true;
 	
 	/**
 	 * The constructor of this class 
@@ -107,7 +109,7 @@ public class Board extends JPanel {
 		player3.addActionListener(new playerAL());
 		player3.setEnabled(false);
 		bottomPanel.add(player3);
-		playerButtons.add(player4);
+		playerButtons.add(player3);
 
 		//Set layout of and add components to main content panel
 		setLayout(new BorderLayout());
@@ -127,19 +129,32 @@ public class Board extends JPanel {
 		instruction.setLineWrap(true);
 		leftPanel.add(instruction);
 		seerChoice1.setText("A Player's card");
-//		seerChoice1.addActionListener(new );
+		seerChoice1.addActionListener(new seerAL());
 		leftPanel.add(seerChoice1);
 		seerChoice2.setText("Two in the center");
-//		seerChoice2.addActionListener(new );
+		seerChoice2.addActionListener(new seerAL());
 		leftPanel.add(seerChoice2);
 		add(leftPanel, BorderLayout.WEST);
 		leftPanel.setVisible(false);
 		
+		System.out.println(playerButtons.size());
 		//Add ActionListeners for Robber and Troublemaker
-		for (int i = 0; i < players.size(); i++) {
-			if (players.get(i).getOrigRoleStr() == "Robber") {
-				
+		for (JButton b : playerButtons) {
+			robberSwitch rs = new robberSwitch();
+			troublemakerSwitch ts = new troublemakerSwitch();
+			if (status == true) {
+				b.addActionListener(rs);
+				System.out.println(b.getText());
+			} else {
+				b.removeActionListener(rs);
+				b.addActionListener(ts);
 			}
+		}
+		
+		if (gameInProgress = false) {
+			//WerewolfTimer 
+			WerewolfCountdown wc = new WerewolfCountdown();
+			//Disable Buttons 
 		}
 			
 	}
@@ -207,6 +222,45 @@ public class Board extends JPanel {
 				player = 8;
 			}
 			flip(player);
+		}
+	}
+	
+
+	private class seerAL implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			String type = "";
+			int centerCount = 0;
+			
+			if (e.getSource().equals(seerChoice1)) {
+				type = "players";
+				enableButtons(type, "Seer");
+				instruction.setVisible(false);
+			} else if (e.getSource().equals(seerChoice2)) {
+				type = "center";
+				enableButtons(type, "Seer");
+				instruction.setVisible(false);
+			} else {
+				if(type.equals("players")) {
+					for(int i = 0; i < playerButtons.size(); i++) {
+						if (e.getSource().equals(playerButtons.get(i))) {
+							flip(i + 1);
+							enableButtons("disable", "");
+							break;
+						}
+					}
+				} else if(type.equals("center")) {
+					for(int i = 0; i < centerButtons.size(); i++) {
+						if (e.getSource().equals(centerButtons.get(i))) {
+							if(centerCount < 2) {
+								flip(i + 1);
+								centerCount++;
+								if(centerCount == 2) enableButtons("disable", "");
+							}
+							break;
+						}
+					}
+				}
+			}
 		}
 	}
 	
@@ -282,6 +336,7 @@ public class Board extends JPanel {
 			if (counter == 0) {
 				robberTimer.stop();
 				flip(robberPosition);
+				status = false;
 			}
 	}
 	}
@@ -357,21 +412,27 @@ public class Board extends JPanel {
 	}
 	
 	public void enableButtons(String type, String role) {
-		for(int i = 0; i < players.size(); i++) {
-			if(players.get(i).getOrigRoleStr() == role) {
-				if(role.equals("Robber")) {
-					
-				} else if(role.equals("Troublemaker")) {
-					
+		if(type.equals("disable")) {
+			for(int j = 0; j < playerButtons.size(); j++) {
+				playerButtons.get(j).setEnabled(false);
+			}
+			for(int j = 0; j < centerButtons.size(); j++) {
+				centerButtons.get(j).setEnabled(false);
+			}
+		} else if (type.equals("center")) {
+			for(int j = 0; j < centerButtons.size(); j++) {
+				centerButtons.get(j).setEnabled(true);
+			}
+		} else if (type.equals("players")) {
+			int player = 0;
+			for(int j = 0; j < players.size(); j++) {
+				if(players.get(j).getOrigRoleStr().equals(role)) {
+					player = j;
 				}
 			}
-		}
-		
-		if(type.equals("players")) {
-			player1.setEnabled(true);
-			player2.setEnabled(true);
-			player3.setEnabled(true);
-			
+			for(int j = 0; j < playerButtons.size(); j++) {
+				if(j != player) playerButtons.get(j).setEnabled(true);
+			}
 		}
 	}
 	
@@ -419,14 +480,14 @@ public class Board extends JPanel {
 				seconds -= 1000;
 				
 				if(phase == 1) {
-					if(timerTurn == 0) {
+					if(timerTurn == 1) {
 						if(seconds == begin - 1000) play(sound);
 					} else {
 						if(seconds == showCard - 1000) {
 							play(sound);
-							flip(timerTurn);
+							flip(timerTurn - 1);
 						} else if(seconds == 2000) {
-							flip(timerTurn);
+							flip(timerTurn - 1);
 							sound = "close.wav";
 							play(sound);
 						}
@@ -458,7 +519,7 @@ public class Board extends JPanel {
 					
 					if(phase < 3) {
 						seconds = showCard;
-						if(timerTurn < players ) {
+						if(timerTurn <= players ) {
 							rcountdown.restart();
 							switch(timerTurn) {
 								case 1:
@@ -482,11 +543,11 @@ public class Board extends JPanel {
 							}
 						
 							timerTurn++;
-							if((phase == 1 && timerTurn == players) || (phase == 2 && timerTurn == 4)) {
-								timerTurn = 1;
-								phase++;
-								if(phase == 2) sound = "w_wakeup.wav";
-							}
+//							if((phase == 1 && timerTurn == players) || (phase == 2 && timerTurn == 4)) {
+//								timerTurn = 1;
+//								phase++;
+//								if(phase == 2) sound = "w_wakeup.wav";
+//							}
 						}
 					}
 					

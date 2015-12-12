@@ -1,3 +1,8 @@
+/*
+ * This creates the frame which game is played.
+ * It will display the Setup Board, then the Game Board after number of players are selected.
+ * This class includes Button ActionListeners.
+ */
 package werewolf;
 
 import javax.swing.ImageIcon;
@@ -11,6 +16,7 @@ import java.awt.event.ActionListener;
 import java.util.*;
 
 public class GameGUI extends JFrame  {
+	
 	JFrame gameFrame;
 	JPanel gamePanel;
 	Board board;
@@ -19,8 +25,11 @@ public class GameGUI extends JFrame  {
 	JButton button;
 			
 
+	/*
+	 * The constructor of this class
+	 */
 	public GameGUI () {
-		gameFrame = new JFrame();
+		gameFrame = new JFrame("One Night Ultimate Werewolf");
 		gamePanel = new JPanel();
 		
 		board = new Board();
@@ -32,12 +41,11 @@ public class GameGUI extends JFrame  {
 		gameFrame.setLayout(new CardLayout());
 		gamePanel.setLayout(new CardLayout());
 		
-		gamePanel.add(setup, "Start Board");
+		gamePanel.add(setup, "Setup Board");
 		gamePanel.add(board, "Game Board");
 		
-		
 		cardLayout = (CardLayout) gamePanel.getLayout();
-		cardLayout.show(gamePanel, "Start Board");
+		cardLayout.show(gamePanel, "Setup Board");
 //		cardLayout.first(gamePanel);
 		
 		setup.threeButton.addActionListener(new generateAL());
@@ -51,6 +59,10 @@ public class GameGUI extends JFrame  {
 		
 	}
 	
+	/*
+	 * ActionListener for Setup Board
+	 * Adds player cards to Game Board according to number of players
+	 */
 	public class generateAL implements ActionListener {
 		public void actionPerformed (ActionEvent e) {
 			
