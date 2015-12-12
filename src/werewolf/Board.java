@@ -18,6 +18,9 @@ import java.util.*;
 
 public class Board extends JPanel {
 	
+	/*
+	 * Instance Variables 
+	 */
 	JPanel topPanel = new JPanel();
 	JPanel centerPanel = new JPanel();
 	JPanel bottomPanel = new JPanel();
@@ -44,13 +47,18 @@ public class Board extends JPanel {
 	private Role temp, temp2;
 	private String name;
 	
-	
+	/**
+	 * The constructor of this class 
+	 */
 	public Board () {
+		
+		//Set layouts of each panel
 		topPanel.setLayout(new FlowLayout());
 		centerPanel.setLayout(new FlowLayout());
 		bottomPanel.setLayout(new FlowLayout());
 		leftPanel.setLayout(new FlowLayout());
 		
+		//Add two cards to the top
 		player1 = new JButton();
 		player1.setIcon(new ImageIcon("werewolfcard.jpg"));
 		player1.setText("Player 1");
@@ -66,6 +74,7 @@ public class Board extends JPanel {
 		player2.setEnabled(false);
 		topPanel.add(player2);
 		
+		//Add three cards to the center 
 		center1 = new JButton();
 		center1.setIcon(new ImageIcon("werewolfcard.jpg"));
 		center1.addActionListener(new playerAL());
@@ -82,6 +91,7 @@ public class Board extends JPanel {
 		center3.setEnabled(false);
 		centerPanel.add(center3);
 		
+		//Add card to the bottom
 		player3 = new JButton();
 		player3.setText("Player 3");
 		player3.setIcon(new ImageIcon("werewolfcard.jpg"));
@@ -89,16 +99,19 @@ public class Board extends JPanel {
 		player3.setEnabled(false);
 		bottomPanel.add(player3);
 
+		//Set layout of and add components to main content panel
 		setLayout(new BorderLayout());
 
 		add(topPanel, BorderLayout.NORTH);
 		add(centerPanel, BorderLayout.CENTER);
 		add(bottomPanel, BorderLayout.SOUTH);
 		
+		//Add start button 
 		startButton.setText("Start Game");
 		startButton.addActionListener(new startButtonAL());
 		add(startButton, BorderLayout.EAST);
 		
+		//Add Seer's choice buttons
 		leftPanel.setPreferredSize(new Dimension(150, 480));
 		instruction.setText("Would you like to look at another player's card, or two cards in the center?");
 		instruction.setLineWrap(true);
