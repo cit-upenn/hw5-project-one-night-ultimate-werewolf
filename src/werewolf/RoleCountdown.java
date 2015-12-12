@@ -15,12 +15,16 @@ import java.io.*;
 import sun.audio.*;
 
 public class RoleCountdown extends JPanel {
-	private long fiveSeconds = 10000;
+	private long seconds = 10000;
 	java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("mm:ss");
-	JLabel clock = new JLabel(sdf.format(new Date(fiveSeconds)));
+	JLabel clock = new JLabel(sdf.format(new Date(seconds)));
 	Timer rcountdown;
-	int times = 2;
-//	AudioStream audioStream;
+	int turn = 1;
+	int players = 2;
+	String sound = "player1.wav";
+	InputStream in;
+	AudioStream audioStream;
+	
 	
 	
 	
@@ -34,40 +38,61 @@ public class RoleCountdown extends JPanel {
 		rcountdown.start();
 		
 		setVisible(true);
-		
-		
-		 
+	}
+	
+	
+	public void play(String fileName) {
+		try {
+			in = new FileInputStream(fileName);
+			audioStream = new AudioStream(in);
+			AudioPlayer.player.start(audioStream);
+		} catch (FileNotFoundException k) {
+		    k.printStackTrace(); 
+		} catch (IOException k) {
+			k.printStackTrace(); 
+		}
 	}
 	
 	public class RoleTimer implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			clock.setText(sdf.format(new Date(fiveSeconds)));
-			fiveSeconds -= 1000;
+			clock.setText(sdf.format(new Date(seconds)));
+			seconds -= 1000;
 			
 			
-			if(fiveSeconds == 9000) {
-				try {
-					String f1 = "player1.wav";
-					InputStream in = new FileInputStream(f1);
-					AudioStream audioStream = new AudioStream(in);
-					AudioPlayer.player.start(audioStream);
-				} catch (FileNotFoundException k) {
-				    k.printStackTrace(); 
-				} catch (IOException k) {
-					k.printStackTrace(); 
-				}
+			if(seconds == 9000) {
+				play(sound);
+				
+			} else if(seconds == 2000) {
+				sound = "close.wav";
+				play(sound);
+				
 			}
 			
-			if (fiveSeconds >= 1000) {
-				clock.setText(sdf.format(new Date(fiveSeconds)));
+			if (seconds >= 1000) {
+				clock.setText(sdf.format(new Date(seconds)));
 			} else {
-				clock.setText(sdf.format(new Date(fiveSeconds)));
+				clock.setText(sdf.format(new Date(seconds)));
 				rcountdown.stop();
 				
-				fiveSeconds = 10000;
-				if(times>0) {
+				seconds = 10000;
+				if(turn <= players) {
 					rcountdown.restart();
-					times--;
+					switch(turn) {
+						case 1:
+							sound = "player2.wav";
+							break;
+						case 2:
+							sound = "player3.wav";
+							break;
+						case 3:
+							sound = "player4.wav";
+							break;
+						case 4:
+							sound = "player5.wav";
+							break;
+					}
+					
+					turn++;
 				}
 //				fiveSeconds = 5000;
 //				clock.setText(sdf.format(new Date(fiveSeconds)));
