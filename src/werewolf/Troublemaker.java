@@ -11,7 +11,12 @@ public class Troublemaker implements Role {
 	public String getRoleStr() {
 		return "Troublemaker";
 	}
-
+	
+	@Override
+	public String imageFile() {
+		return "Troublemaker.jpg";
+	}
+	
 	@Override
 	public ArrayList<Integer> wakeUp(int numOfPlayers, int ID, Scanner in) {
 		System.out.println("Whose cards would you like to swap?");

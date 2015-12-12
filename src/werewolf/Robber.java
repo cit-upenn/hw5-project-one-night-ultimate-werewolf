@@ -12,6 +12,12 @@ public class Robber implements Role {
 		return "Robber";
 	}
 	
+	
+	@Override
+	public String imageFile() {
+		return "Robber.jpg";
+	}
+	
 	@Override
 	public ArrayList<Integer> wakeUp(int numOfPlayers, int ID, Scanner in) {
 		System.out.println("Whose card would you like to switch with?");

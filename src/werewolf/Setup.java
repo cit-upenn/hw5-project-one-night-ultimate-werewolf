@@ -4,7 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.*;
 
-public class StartBoardGUI extends JPanel {
+public class Setup extends JPanel {
 	
 //	JFrame frame;
 	JLabel topLabel;
@@ -14,7 +14,7 @@ public class StartBoardGUI extends JPanel {
 	JButton fourButton;
 	JButton fiveButton;
 	
-	public StartBoardGUI () {
+	public Setup () {
 //		frame = new JFrame("One Night Ultimate Werewolf");
 //		frame.setLayout(new BorderLayout());
 //		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

@@ -7,7 +7,7 @@ import java.awt.event.ActionListener;
 import java.util.*;
 
 
-public class WerewolfGUI extends JPanel {
+public class Board extends JPanel {
 	
 	JPanel topPanel = new JPanel();
 	JPanel centerPanel = new JPanel();
@@ -24,9 +24,12 @@ public class WerewolfGUI extends JPanel {
 	JButton center3;
 	JButton player4;
 	JButton player5;
+	RoleCountdown rc;
+	boolean flip = false;
+	int player;
 //	RoleCountdown rc;
 
-	public WerewolfGUI () {
+	public Board () {
 		topPanel.setLayout(new FlowLayout());
 		centerPanel.setLayout(new FlowLayout());
 		bottomPanel.setLayout(new FlowLayout());
@@ -84,8 +87,17 @@ public class WerewolfGUI extends JPanel {
 	private class playerAL implements ActionListener {
 		public void actionPerformed(ActionEvent f) {
 			if (f.getSource().equals(player1)) {
-				player1.setIcon(new ImageIcon("Villager-Werewolves.jpg"));
+				player = 1;
+			} else if (f.getSource().equals(player2)) {
+				player = 2;
+			} else if (f.getSource().equals(player3)) {
+				player = 3;
+			} else if (f.getSource().equals(player4)) {
+				player = 4;
+			} else if (f.getSource().equals(player5)) {
+				player = 5;
 			}
+			flip(player);
 		}
 	}
 	
@@ -94,15 +106,75 @@ public class WerewolfGUI extends JPanel {
 //		topPanel.add(screenCard);
 //	}
 	
+	public void flip(int player) {
+		flip = !flip;
+		
+		switch(player) {
+			case 1:
+				if (flip) {
+					player1.setIcon(new ImageIcon("Villager-Werewolves.jpg"));
+				} else {
+					player1.setIcon(new ImageIcon("werewolfcard.jpg"));
+				}
+				break;
+			case 2:
+				if (flip) {
+					player2.setIcon(new ImageIcon("Villager-Werewolves.jpg"));
+				} else {
+					player2.setIcon(new ImageIcon("werewolfcard.jpg"));
+				}
+				break;
+			case 3:
+				if (flip) {
+					player3.setIcon(new ImageIcon("Villager-Werewolves.jpg"));
+				} else {
+					player3.setIcon(new ImageIcon("werewolfcard.jpg"));
+				}
+				break;
+			case 4:
+				if (flip) {
+					player4.setIcon(new ImageIcon("Villager-Werewolves.jpg"));
+				} else {
+					player4.setIcon(new ImageIcon("werewolfcard.jpg"));
+				}
+				break;
+			case 5:
+				if (flip) {
+					player5.setIcon(new ImageIcon("Villager-Werewolves.jpg"));
+				} else {
+					player5.setIcon(new ImageIcon("werewolfcard.jpg"));
+				}
+				break;
+		}
+
+	}
 	public void addPlayerCardBottom(int numPlayers) {
-		if (numPlayers == 4) {
-			
+		if (numPlayers >= 4) {
+			player4 = new JButton();
+			player4.setIcon(new ImageIcon("werewolfcard.jpg"));
+			player4.addActionListener(new playerAL());
+			bottomPanel.add(player4);
+		} 
+		if (numPlayers == 5) {
+			player5 = new JButton();
+			player5.setIcon(new ImageIcon("werewolfcard.jpg"));
+			player5.addActionListener(new playerAL());
+			bottomPanel.add(player5);
 		}
 	
 	}
 	
 	public void revealRoles() {
-		add(new RoleCountdown(), BorderLayout.EAST);
+		rc = new RoleCountdown();
+		add(rc, BorderLayout.EAST);
+//		while(rc.running = true) {
+		if(rc.seconds == 9000) {
+			flip(rc.turn);
+		} else if(rc.seconds == 2000) {
+			flip(rc.turn);
+		}
+		System.out.println(rc.seconds);
+//		}
 	}
 	
 

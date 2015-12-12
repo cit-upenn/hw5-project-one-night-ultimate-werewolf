@@ -13,6 +13,11 @@ public class Seer implements Role {
 	}
 	
 	@Override
+	public String imageFile() {
+		return "Seer.jpg";
+	}
+	
+	@Override
 	public ArrayList<Integer> wakeUp(int numOfPlayers, int ID, Scanner in) {
 		System.out.println("Enter 1 to look at another player's card; 2 to look at any two cards in the center");
 //		Scanner in = new Scanner(System.in);

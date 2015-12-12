@@ -10,7 +10,12 @@ public class Werewolf implements Role {
 	public String getRoleStr() {
 		return "Werewolf";
 	}
-
+	
+	@Override
+	public String imageFile() {
+		return "WerewolfRole.jpg";
+	}
+	
 	@Override
 	public ArrayList<Integer> wakeUp(int numOfPlayers, int ID, Scanner in) {
 		// TODO Auto-generated method stub

@@ -9,6 +9,11 @@ public class Villager implements Role {
 	public String getRoleStr() {
 		return "Villager";
 	}
+	
+	@Override
+	public String imageFile() {
+		return "Villager-Werewolves.jpg";
+	}
 
 	@Override
 	public ArrayList<Integer> wakeUp(int numOfPlayers, int ID, Scanner in) {

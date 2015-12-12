@@ -15,7 +15,7 @@ import java.io.*;
 import sun.audio.*;
 
 public class RoleCountdown extends JPanel {
-	private long seconds = 10000;
+	public long seconds = 10000;
 	java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("mm:ss");
 	JLabel clock = new JLabel(sdf.format(new Date(seconds)));
 	Timer rcountdown;
@@ -24,8 +24,10 @@ public class RoleCountdown extends JPanel {
 	String sound = "player1.wav";
 	InputStream in;
 	AudioStream audioStream;
+//	Board b = new Board();
 	
-	
+	public boolean reveal = false;
+	public boolean running = true;
 	
 	
 	public RoleCountdown() {
@@ -61,11 +63,14 @@ public class RoleCountdown extends JPanel {
 			
 			if(seconds == 9000) {
 				play(sound);
-				
+//				b.flip(turn);
+//				flip(turn);
+//				reveal = true;
 			} else if(seconds == 2000) {
+//				b.flip(turn);
 				sound = "close.wav";
 				play(sound);
-				
+//				reveal = false;
 			}
 			
 			if (seconds >= 1000) {
@@ -93,6 +98,8 @@ public class RoleCountdown extends JPanel {
 					}
 					
 					turn++;
+				} else {
+					running = false;
 				}
 //				fiveSeconds = 5000;
 //				clock.setText(sdf.format(new Date(fiveSeconds)));
