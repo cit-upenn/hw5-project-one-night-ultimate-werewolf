@@ -31,6 +31,8 @@ public class Board extends JPanel {
 	RoleCard rolecard = new RoleCard();
 	JButton startButton = new JButton();
 	JButton player1, player2, player3, player4, player5;
+	ArrayList<JButton> playerButtons = new ArrayList<JButton>();
+	ArrayList<JButton> centerButtons = new ArrayList<JButton>();
 	JButton center1, center2, center3;
 	JButton seerChoice1 = new JButton();
 	JButton seerChoice2 = new JButton();
@@ -46,6 +48,8 @@ public class Board extends JPanel {
 	private int c, c2;
 	private Role temp, temp2;
 	private String name;
+	private int switchClicker = 0;
+	Timer robberTimer;
 	
 	/**
 	 * The constructor of this class 
@@ -66,6 +70,7 @@ public class Board extends JPanel {
 //		player1.setDisabledIcon(new ImageIcon("werewolfcard.jpg"));
 		player1.setEnabled(false);
 		topPanel.add(player1);
+		playerButtons.add(player1);
 		
 		player2 = new JButton();
 		player2.setText("Player 2");
@@ -73,6 +78,7 @@ public class Board extends JPanel {
 		player2.addActionListener(new playerAL());
 		player2.setEnabled(false);
 		topPanel.add(player2);
+		playerButtons.add(player2);
 		
 		//Add three cards to the center 
 		center1 = new JButton();
@@ -80,16 +86,19 @@ public class Board extends JPanel {
 		center1.addActionListener(new playerAL());
 		center1.setEnabled(false);
 		centerPanel.add(center1);
+		centerButtons.add(center1);
 		center2 = new JButton();
 		center2.setIcon(new ImageIcon("werewolfcard.jpg"));
 		center2.addActionListener(new playerAL());
 		center2.setEnabled(false);
 		centerPanel.add(center2);
+		centerButtons.add(center2);
 		center3 = new JButton();
 		center3.setIcon(new ImageIcon("werewolfcard.jpg"));
 		center3.addActionListener(new playerAL());
 		center3.setEnabled(false);
 		centerPanel.add(center3);
+		centerButtons.add(center3);
 		
 		//Add card to the bottom
 		player3 = new JButton();
@@ -98,6 +107,7 @@ public class Board extends JPanel {
 		player3.addActionListener(new playerAL());
 		player3.setEnabled(false);
 		bottomPanel.add(player3);
+		playerButtons.add(player4);
 
 		//Set layout of and add components to main content panel
 		setLayout(new BorderLayout());
@@ -125,6 +135,21 @@ public class Board extends JPanel {
 		add(leftPanel, BorderLayout.WEST);
 		leftPanel.setVisible(false);
 		
+		//Add ActionListeners for Robber and Troublemaker
+		for (int i = 0; i < players.size(); i++) {
+			if (players.get(i).getOrigRoleStr() == "Robber") {
+				
+			}
+		}
+			
+	}
+	
+	public void setRobberButton () {
+		for (Player p : players) {
+			if (p.getRoleStr().equals("Robber")) {
+//				int 
+			}
+		}
 	}
 
 	private class startButtonAL implements ActionListener {
@@ -148,7 +173,7 @@ public class Board extends JPanel {
 				players.add(new Player());
 				players.get(i).assignRole(roles.get(i));
 			}
-			System.out.println(players.size());
+//			System.out.println(players.size());
 				
 			//put 3 remaining cards at center of table
 			for(int i = 0; i < 3; i++) {
@@ -183,6 +208,82 @@ public class Board extends JPanel {
 			}
 			flip(player);
 		}
+	}
+	
+	private class troublemakerSwitch implements ActionListener {
+		public void actionPerformed (ActionEvent e) {
+			int one = 0;
+			int two = 0;
+			switchClicker++;
+			
+			for (int i = 0; i < playerButtons.size(); i++ ) {
+				if (e.getSource().equals(playerButtons.get(i))) {
+					one = i;
+				}
+			}
+			if (switchClicker == 2) {
+				for (int i = 0; i < playerButtons.size(); i++ ) {
+					if (e.getSource().equals(playerButtons.get(i))) {
+						two = i;
+					}
+				}
+				temp = players.get(one).getRole();
+				temp2 = players.get(two).getRole();
+				players.get(one).assignRole(temp2);
+				players.get(two).assignRole(temp);
+				switchClicker = 0;
+			}
+		}
+	}
+	
+	public class robberSwitch implements ActionListener {
+		public void actionPerformed (ActionEvent e) {
+			int one = 0;
+			int two = 0;
+			int j;
+			for (int i = 0; i < playerButtons.size(); i++) {
+				if (e.getSource().equals(playerButtons.get(i))) {
+					one = i;
+					for (j = 0; j < players.size(); j++) {
+						if (players.get(j).getOrigRoleStr() == "Robber") {
+							two = j;
+						}
+					}
+					temp = players.get(one).getRole();
+					temp2 = players.get(two).getRole();
+					players.get(one).assignRole(temp2);
+					players.get(two).assignRole(temp);
+					flip(j + 1);
+					
+					int count = 5;
+					RobberCountdown r = new RobberCountdown(count, j+1);
+					robberTimer = new Timer(1000, r);
+					robberTimer.start();
+					
+					
+				}
+			}
+			//switch roles
+			//view new card
+		}
+	}
+	
+	public class RobberCountdown implements ActionListener {
+		int counter;
+		int robberPosition;
+			
+		public RobberCountdown(int counter, int robberInt) {
+			this.counter = counter;
+			this.robberPosition = robberInt;
+		}
+		
+		public void actionPerformed (ActionEvent e) {
+			counter--;
+			if (counter == 0) {
+				robberTimer.stop();
+				flip(robberPosition);
+			}
+	}
 	}
 	
 //	public void addPlayerCardTop() {
