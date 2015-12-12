@@ -65,40 +65,40 @@ public class GameGUI extends JFrame  {
 	
 	public class generateAL implements ActionListener {
 		public void actionPerformed (ActionEvent e) {
-//			if(e.getSource().equals(setup.fourButton) || ) {
-				roles.add(new Werewolf());
-				roles.add(new Werewolf());
-				roles.add(new Seer());
-				roles.add(new Robber());
-				roles.add(new Troublemaker());
+			roles.add(new Werewolf());
+			roles.add(new Werewolf());
+			roles.add(new Seer());
+			roles.add(new Robber());
+			roles.add(new Troublemaker());
+			roles.add(new Villager());
+			
+			if(e.getSource().equals(setup.threeButton)) {
+				board.setNumPlayers(3);
+			} else if(e.getSource().equals(setup.fourButton)) {
 				roles.add(new Villager());
-//				}
+				board.setNumPlayers(4);
+				board.addPlayerCardBottom();
+			} else if(e.getSource().equals(setup.fiveButton)) {
+				roles.add(new Villager());
+				roles.add(new Villager());
+				board.setNumPlayers(5);
+				board.addPlayerCardBottom();
+			}	
 				
-				if(e.getSource().equals(setup.fourButton)) {
-					roles.add(new Villager());
-					board.addPlayerCardBottom(4);
-				} else if(e.getSource().equals(setup.fiveButton)) {
-					roles.add(new Villager());
-					roles.add(new Villager());
-					board.addPlayerCardBottom(5);
-				}
+			//generate players & assign cards
+			Collections.shuffle(roles);
+			for(int i = 0; i < numOfPlayers; i++) {
+				players.add(new Player());
+				players.get(i).assignRole(roles.get(i));
+			}
 				
+			//put 3 remaining cards at center of table
+			for(int i = 0; i < 3; i++) {
+				center.add(roles.get(numOfPlayers));
+				roles.remove(numOfPlayers);
+			}
 				
-				//generate players & assign cards
-				Collections.shuffle(roles);
-				for(int i = 0; i < numOfPlayers; i++) {
-					players.add(new Player());
-					players.get(i).assignRole(roles.get(i));
-				}
-
-				
-				//put 3 remaining cards at center of table
-				for(int i = 0; i < 3; i++) {
-					center.add(roles.get(numOfPlayers));
-					roles.remove(numOfPlayers);
-				}
-				
-				cardLayout.show(gamePanel, "Game Board");
+			cardLayout.show(gamePanel, "Game Board");
 		}
 	}
 	
@@ -108,15 +108,7 @@ public class GameGUI extends JFrame  {
 //		}
 //	}
 	
-	public void flop() {
-//		while(board.rc.running) {
-			if(board.rc.seconds == 9000) {
-				board.flip(board.rc.turn);
-			} else if(board.rc.seconds == 2000) {
-				board.flip(board.rc.turn);
-			}
-//		}
-	}
+
 		
 		
 		public static void main(String[] args) {

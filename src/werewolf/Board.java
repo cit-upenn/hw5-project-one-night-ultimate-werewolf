@@ -25,24 +25,18 @@ public class Board extends JPanel {
 	JLabel screenCard2 = new JLabel();
 	RoleCard rolecard = new RoleCard();
 	JButton startButton = new JButton();
-	JButton player1 = new JButton();
-	JButton player2;
-	JButton player3;
-	JButton center1;
-	JButton center2;
-	JButton center3;
-	JButton player4;
-	JButton player5;
+	JButton player1, player2, player3, player4, player5;
+	JButton center1, center2, center3;
 	RoleCountdown rc;
 	boolean flip = false;
-	int player;
-//	RoleCountdown rc;
+	int player, numPlayers;
 
 	public Board () {
 		topPanel.setLayout(new FlowLayout());
 		centerPanel.setLayout(new FlowLayout());
 		bottomPanel.setLayout(new FlowLayout());
-
+		
+		player1 = new JButton();
 		player1.setIcon(new ImageIcon("werewolfcard.jpg"));
 		player1.setText("Player 1");
 		player1.addActionListener(new playerAL());
@@ -89,7 +83,8 @@ public class Board extends JPanel {
 	private class startButtonAL implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			startButton.setVisible(false);
-			revealRoles();
+			rc = new RoleCountdown();
+			add(rc, BorderLayout.EAST);
 		}
 	}
 	
@@ -115,49 +110,40 @@ public class Board extends JPanel {
 //		topPanel.add(screenCard);
 //	}
 	
+	public void setNumPlayers(int n) {
+		numPlayers = n;
+	}
+	
 	public void flip(int player) {
 		flip = !flip;
 		
 		switch(player) {
 			case 1:
-				if (flip) {
-					player1.setIcon(new ImageIcon("Villager-Werewolves.jpg"));
-				} else {
-					player1.setIcon(new ImageIcon("werewolfcard.jpg"));
-				}
+				if (flip) player1.setIcon(new ImageIcon("Villager-Werewolves.jpg"));
+				else player1.setIcon(new ImageIcon("werewolfcard.jpg"));
 				break;
 			case 2:
-				if (flip) {
-					player2.setIcon(new ImageIcon("Villager-Werewolves.jpg"));
-				} else {
-					player2.setIcon(new ImageIcon("werewolfcard.jpg"));
-				}
+				if (flip) player2.setIcon(new ImageIcon("Villager-Werewolves.jpg"));
+				else player2.setIcon(new ImageIcon("werewolfcard.jpg"));
 				break;
 			case 3:
-				if (flip) {
-					player3.setIcon(new ImageIcon("Villager-Werewolves.jpg"));
-				} else {
-					player3.setIcon(new ImageIcon("werewolfcard.jpg"));
-				}
+				if (flip) player3.setIcon(new ImageIcon("Villager-Werewolves.jpg"));
+				else player3.setIcon(new ImageIcon("werewolfcard.jpg"));
 				break;
 			case 4:
-				if (flip) {
-					player4.setIcon(new ImageIcon("Villager-Werewolves.jpg"));
-				} else {
-					player4.setIcon(new ImageIcon("werewolfcard.jpg"));
-				}
+				if (flip) player4.setIcon(new ImageIcon("Villager-Werewolves.jpg"));
+				else player4.setIcon(new ImageIcon("werewolfcard.jpg"));
 				break;
 			case 5:
-				if (flip) {
-					player5.setIcon(new ImageIcon("Villager-Werewolves.jpg"));
-				} else {
-					player5.setIcon(new ImageIcon("werewolfcard.jpg"));
-				}
+				if (flip) player5.setIcon(new ImageIcon("Villager-Werewolves.jpg"));
+				else player5.setIcon(new ImageIcon("werewolfcard.jpg"));
 				break;
 		}
 
 	}
-	public void addPlayerCardBottom(int numPlayers) {
+	
+	
+	public void addPlayerCardBottom() {
 		if (numPlayers >= 4) {
 			player4 = new JButton();
 			player4.setIcon(new ImageIcon("werewolfcard.jpg"));
@@ -173,27 +159,20 @@ public class Board extends JPanel {
 	
 	}
 	
-	public void revealRoles() {
-		rc = new RoleCountdown();
-		add(rc, BorderLayout.EAST);
-//		while(rc.running = true) {
-		if(rc.seconds == 9000) {
-			flip(rc.turn);
-		} else if(rc.seconds == 2000) {
-			flip(rc.turn);
-		}
-		System.out.println(rc.seconds);
-//		}
-	}
+//	public void revealRoles() {
+//		
+//	}
 	
 	public class RoleCountdown extends JPanel {
-		public long seconds = 10000;
+		private long begin = 4000;
+		private long showCard = 9000;
+		private long seconds = begin;
 		java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("mm:ss");
 		JLabel clock = new JLabel(sdf.format(new Date(seconds)));
 		Timer rcountdown;
-		int turn = 1;
-		int players = 2;
-		String sound = "player1.wav";
+		int turn = 0;
+		int players = numPlayers - 1;
+		String sound = "everyone.wav";
 		InputStream in;
 		AudioStream audioStream;
 //		Board b = new Board();
@@ -232,15 +211,19 @@ public class Board extends JPanel {
 				clock.setText(sdf.format(new Date(seconds)));
 				seconds -= 1000;
 				
-				
-				if(seconds == 9000) {
+				if(turn == 0) {
+					if(seconds == begin - 1000) {
+						play(sound);
+					}
+				} else {
+				if(seconds == showCard - 1000) {
 					play(sound);
-//					b.flip(turn);
 					flip(turn);
 				} else if(seconds == 2000) {
 					flip(turn);
 					sound = "close.wav";
 					play(sound);
+				}
 				}
 				
 				if (seconds >= 1000) {
@@ -249,10 +232,13 @@ public class Board extends JPanel {
 					clock.setText(sdf.format(new Date(seconds)));
 					rcountdown.stop();
 					
-					seconds = 10000;
+					seconds = showCard;
 					if(turn <= players) {
 						rcountdown.restart();
 						switch(turn) {
+							case 0:
+								sound = "player1.wav";
+								break;
 							case 1:
 								sound = "player2.wav";
 								break;

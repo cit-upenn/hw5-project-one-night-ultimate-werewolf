@@ -66,23 +66,6 @@ public class Game {
 			System.out.println("Player " + (i+1) + ", open your eyes. this is your card.");
 			System.out.println(players.get(i).getRoleStr());
 		}
-		/*
-		System.out.println("Player 1, open your eyes. this is your card.");
-		System.out.println();
-//		timer(5,0);
-		
-		System.out.println("Player 2, open your eyes. this is your card.");
-//		timer(5,0);
-		
-		System.out.println("Player 3, open your eyes. this is your card.");
-//		timer(5,0);
-		
-		System.out.println("Player 4, open your eyes. this is your card.");
-//		timer(5,0);
-		
-		System.out.println("Player 5, open your eyes. this is your card.");
-//		timer(5,0);
-		*/
 		
 		
 		
@@ -190,22 +173,6 @@ public class Game {
 		}
 		
 		in.close();
-	}
-
-	
-	public void timer(int sec, int who) {
-		switch(who) {
-			case 0:
-				break;
-			case 1:
-				System.out.println("Werewolf open your eyes");
-				break;
-			case 2:
-				System.out.println("Seer open your eyes");
-				break;
-		}
-
-		new Countdown(sec);
 	}
 
 }
