@@ -1,9 +1,18 @@
 package werewolf;
 
 import javax.swing.*;
+import javax.swing.Timer;
+
+import sun.audio.AudioPlayer;
+import sun.audio.AudioStream;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.*;
 
 
@@ -176,6 +185,99 @@ public class Board extends JPanel {
 		System.out.println(rc.seconds);
 //		}
 	}
+	
+	public class RoleCountdown extends JPanel {
+		public long seconds = 10000;
+		java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("mm:ss");
+		JLabel clock = new JLabel(sdf.format(new Date(seconds)));
+		Timer rcountdown;
+		int turn = 1;
+		int players = 2;
+		String sound = "player1.wav";
+		InputStream in;
+		AudioStream audioStream;
+//		Board b = new Board();
+		
+		public boolean reveal = false;
+		public boolean running = true;
+		
+		
+		public RoleCountdown() {
+			setLayout(new BorderLayout());
+			
+			
+			add(clock, BorderLayout.CENTER);
+			
+			rcountdown = new Timer(1000, new RoleTimer());
+			rcountdown.start();
+			
+			setVisible(true);
+		}
+		
+		
+		public void play(String fileName) {
+			try {
+				in = new FileInputStream(fileName);
+				audioStream = new AudioStream(in);
+				AudioPlayer.player.start(audioStream);
+			} catch (FileNotFoundException k) {
+			    k.printStackTrace(); 
+			} catch (IOException k) {
+				k.printStackTrace(); 
+			}
+		}
+		
+		public class RoleTimer implements ActionListener {
+			public void actionPerformed(ActionEvent e) {
+				clock.setText(sdf.format(new Date(seconds)));
+				seconds -= 1000;
+				
+				
+				if(seconds == 9000) {
+					play(sound);
+//					b.flip(turn);
+					flip(turn);
+				} else if(seconds == 2000) {
+					flip(turn);
+					sound = "close.wav";
+					play(sound);
+				}
+				
+				if (seconds >= 1000) {
+					clock.setText(sdf.format(new Date(seconds)));
+				} else {
+					clock.setText(sdf.format(new Date(seconds)));
+					rcountdown.stop();
+					
+					seconds = 10000;
+					if(turn <= players) {
+						rcountdown.restart();
+						switch(turn) {
+							case 1:
+								sound = "player2.wav";
+								break;
+							case 2:
+								sound = "player3.wav";
+								break;
+							case 3:
+								sound = "player4.wav";
+								break;
+							case 4:
+								sound = "player5.wav";
+								break;
+						}
+						
+						turn++;
+					} else {
+						running = false;
+					}
+					
+				}
+			}
+		}
+
+	}
+	
 	
 
 }
