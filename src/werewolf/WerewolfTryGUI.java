@@ -78,6 +78,7 @@ public class WerewolfTryGUI extends JFrame implements ActionListener {
 				w.addPlayerCardBottom(5);
 			}
 			
+			
 			//generate players & assign cards
 			Collections.shuffle(roles);
 			for(int i = 0; i < numOfPlayers; i++) {
