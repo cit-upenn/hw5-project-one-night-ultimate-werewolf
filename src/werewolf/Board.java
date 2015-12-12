@@ -69,14 +69,17 @@ public class Board extends JPanel {
 		center1 = new JButton();
 		center1.setIcon(new ImageIcon("werewolfcard.jpg"));
 		center1.addActionListener(new playerAL());
+		center1.setEnabled(false);
 		centerPanel.add(center1);
 		center2 = new JButton();
 		center2.setIcon(new ImageIcon("werewolfcard.jpg"));
 		center2.addActionListener(new playerAL());
+		center2.setEnabled(false);
 		centerPanel.add(center2);
 		center3 = new JButton();
 		center3.setIcon(new ImageIcon("werewolfcard.jpg"));
 		center3.addActionListener(new playerAL());
+		center3.setEnabled(false);
 		centerPanel.add(center3);
 		
 		player3 = new JButton();
@@ -107,7 +110,7 @@ public class Board extends JPanel {
 //		seerChoice2.addActionListener(new );
 		leftPanel.add(seerChoice2);
 		add(leftPanel, BorderLayout.WEST);
-//		instruction.setVisible(false);
+		leftPanel.setVisible(false);
 		
 	}
 
@@ -239,16 +242,35 @@ public class Board extends JPanel {
 	
 	}
 	
+	public void enableButtons(String type, String role) {
+		for(int i = 0; i < players.size(); i++) {
+			if(players.get(i).getOrigRoleStr() == role) {
+				if(role.equals("Robber")) {
+					
+				} else if(role.equals("Troublemaker")) {
+					
+				}
+			}
+		}
+		
+		if(type.equals("players")) {
+			player1.setEnabled(true);
+			player2.setEnabled(true);
+			player3.setEnabled(true);
+			
+		}
+	}
 	
 	public class RoleCountdown extends JPanel {
 		private long begin = 4000;
 		private long showCard = 9000;
+		private long debate = 2 * 60000;
 		private long seconds = begin;
 		java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("mm:ss");
 		JLabel clock = new JLabel(sdf.format(new Date(seconds)));
 		Timer rcountdown;
 		int phase = 1;
-		int turnPreGame = 0;
+		int timerTurn = 1;
 		int players = numPlayers;
 		String sound = "everyone.wav";
 		InputStream in;
@@ -283,26 +305,36 @@ public class Board extends JPanel {
 				seconds -= 1000;
 				
 				if(phase == 1) {
-					if(turnPreGame == 0) {
+					if(timerTurn == 0) {
 						if(seconds == begin - 1000) play(sound);
 					} else {
 						if(seconds == showCard - 1000) {
 							play(sound);
-							flip(turnPreGame);
+							flip(timerTurn);
 						} else if(seconds == 2000) {
-							flip(turnPreGame);
+							flip(timerTurn);
 							sound = "close.wav";
 							play(sound);
 						}
 					}
+				
+				} else if(phase == 2) {
+					if(seconds == showCard) {
+						play(sound);
+						if(timerTurn == 3 || timerTurn == 4) {
+							player1.setEnabled(true);
+						}
+					}
+				} else if(phase == 3) {
+					if(seconds == debate - 1000) {
+						sound = "e_wakeup.wav";
+						play(sound);
+					} else if(seconds == 0) {
+						for(int i = 0; i < 8; i++) {
+							flip(i);
+						}
+					}
 				}
-//				} else if(phase == 2) {
-//					if(seconds == ) {
-//						
-//					}
-//				} else if(phase == 3) {
-//					
-//				}
 				
 				if (seconds >= 1000) {
 					clock.setText(sdf.format(new Date(seconds)));
@@ -310,28 +342,38 @@ public class Board extends JPanel {
 					clock.setText(sdf.format(new Date(seconds)));
 					rcountdown.stop();
 					
-					seconds = showCard;
-					if(turnPreGame <= players - 1) {
-						rcountdown.restart();
-						switch(turnPreGame) {
-							case 0:
-								sound = "player1.wav";
-								break;
-							case 1:
-								sound = "player2.wav";
-								break;
-							case 2:
-								sound = "player3.wav";
-								break;
-							case 3:
-								sound = "player4.wav";
-								break;
-							case 4:
-								sound = "player5.wav";
-								break;
-						}
+					if(phase < 3) {
+						seconds = showCard;
+						if(timerTurn < players ) {
+							rcountdown.restart();
+							switch(timerTurn) {
+								case 1:
+									if(phase == 1) sound = "player1.wav";
+									else sound = "s_wakeup.wav";
+									break;
+								case 2:
+									if(phase == 1) sound = "player2.wav";
+									else sound = "r_wakeup";
+									break;
+								case 3:
+									if(phase == 1) sound = "player3.wav";
+									else sound = "t_wakeup.wav";
+									break;
+								case 4:
+									if(phase == 1) sound = "player4.wav";
+									break;
+								case 5:
+									if(phase == 1) sound = "player5.wav";
+									break;
+							}
 						
-						turnPreGame++;
+							timerTurn++;
+							if((phase == 1 && timerTurn == players) || (phase == 2 && timerTurn == 4)) {
+								timerTurn = 1;
+								phase++;
+								if(phase == 2) sound = "w_wakeup.wav";
+							}
+						}
 					}
 					
 				}
