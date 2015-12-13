@@ -279,7 +279,7 @@ public class Board extends JPanel {
 					players.get(two).assignRole(temp);
 					System.out.println("flip player " + (two+1));
 					flip(two+1);
-					flipback = two+1;					
+					flipback3 = two+1;					
 					
 				}
 			}
@@ -406,7 +406,7 @@ public class Board extends JPanel {
 		private long beginningDur = 4000;
 		private long showCardDur = 9000;
 		private long roleActionDur = 20000;
-		private long debateDur = 10000;
+		private long debateDur = 210000;
 		private long seconds = beginningDur;
 		java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("mm:ss");
 		JLabel clock = new JLabel(sdf.format(new Date(seconds)));
