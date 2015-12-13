@@ -39,28 +39,21 @@ public class Board extends JPanel {
 	private ArrayList<Role> roles;
 	private ArrayList<Role> center;
 	private ArrayList<Player> players;
-	private ArrayList<Integer> choice;
 	private Role temp, temp2;
-	private String name;
 
 	RoleCountdown rc;
-	Timer robberTimer;
-
-	private int player, numPlayers;
-	private int c, c2;
-	private int turnDuringGame = 1;	
+	private int numPlayers;
 	private int switchClicker = 0;
 	int flipback = 0;
 	int flipback2 = 0;
 	int flipback3 = 0;
 	int sChoice = 0;
-	private boolean flip = false;
 
 	ImageIcon back;
 
-	seerAL sl = new seerAL();
-	robberSwitch rs = new robberSwitch();
-	troublemakerSwitch ts = new troublemakerSwitch();
+	SeerAL sl = new SeerAL();
+	RobberAL rl = new RobberAL();
+	TroublemakerAL tl = new TroublemakerAL();
 
 	/**
 	 * The constructor of this class 
@@ -83,7 +76,6 @@ public class Board extends JPanel {
 		roles = new ArrayList<Role>();
 		center = new ArrayList<Role>();
 		players = new ArrayList<Player>();
-		choice = new ArrayList<Integer>();
 
 		back = new ImageIcon("werewolfcard.jpg");
 
@@ -206,7 +198,7 @@ public class Board extends JPanel {
 	 * Actions include choosing one of the two buttons in instructions,
 	 * and then choosing which cards to flip
 	 */
-	private class seerAL implements ActionListener {
+	private class SeerAL implements ActionListener {
 		String type = "";
 		int centerCount = 0;
 		public void actionPerformed(ActionEvent e) {
@@ -253,7 +245,7 @@ public class Board extends JPanel {
 	 * An ActionListener that switches two cards that TroubleMaker choose
 	 *
 	 */
-	private class troublemakerSwitch implements ActionListener {
+	private class TroublemakerAL implements ActionListener {
 		int one = 0;
 		int two = 0;
 		public void actionPerformed (ActionEvent e) {
@@ -282,7 +274,7 @@ public class Board extends JPanel {
 	 *
 	 */
 
-	public class robberSwitch implements ActionListener {
+	public class RobberAL implements ActionListener {
 		public void actionPerformed (ActionEvent e) {
 			int one = 0;
 			int two = 0;
@@ -450,13 +442,13 @@ public class Board extends JPanel {
 		private long debateDur = 210000;
 		private long seconds = beginningDur;
 		java.text.SimpleDateFormat sdf;
-		JLabel clock;
-		Timer rcountdown;
-		int phase = 1;
-		int timerTurn = 1;
-		String sound = "everyone.wav";
-		InputStream in;
-		AudioStream audioStream;
+		private JLabel clock;
+		private Timer rcountdown;
+		private int phase = 1;
+		private int timerTurn = 1;
+		private String sound = "everyone.wav";
+		private InputStream in;
+		private AudioStream audioStream;
 
 		/*
 		 * The constructor for this class
@@ -544,7 +536,7 @@ public class Board extends JPanel {
 							play(sound);
 							enableButtons("players", "Robber");
 							for(JButton b : playerButtons) {
-								b.addActionListener(rs);
+								b.addActionListener(rl);
 							}
 							sound = "r_close.wav";
 							break;
@@ -552,7 +544,7 @@ public class Board extends JPanel {
 							play(sound);
 							enableButtons("players", "Troublemaker");
 							for(JButton b : playerButtons) {
-								b.addActionListener(ts);
+								b.addActionListener(tl);
 							}
 							sound = "t_close.wav";
 							break;
@@ -583,14 +575,14 @@ public class Board extends JPanel {
 							flip(flipback3);
 							enableButtons("disable", "");
 							for(JButton b : playerButtons) {
-								b.removeActionListener(rs);
+								b.removeActionListener(rl);
 							}
 							break;
 						case 4: //Troublemaker's turn
 							play(sound);
 							enableButtons("disable", "");
 							for(JButton b : playerButtons) {
-								b.removeActionListener(ts);
+								b.removeActionListener(tl);
 							}
 							break;
 						}
