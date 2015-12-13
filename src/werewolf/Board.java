@@ -404,9 +404,15 @@ public class Board extends JPanel {
 	
 	public class RoleCountdown extends JPanel {
 		private long beginningDur = 4000;
+<<<<<<< HEAD
 		private long showCardDur = 9000;
 		private long roleActionDur = 20000;
 		private long debateDur = 210000;
+=======
+		private long showCardDur = 6000; //9000;
+		private long roleActionDur = 12000; //20000;
+		private long debateDur = 12000; //210000;
+>>>>>>> 37b66edd48d50d61d61a7d9ac2431d6c2008cac5
 		private long seconds = beginningDur;
 		java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("mm:ss");
 		JLabel clock = new JLabel(sdf.format(new Date(seconds)));
