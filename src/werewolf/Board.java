@@ -54,8 +54,10 @@ public class Board extends JPanel {
 	private boolean gameInProgress = true;
 	
 	seerAL sl = new seerAL();
+	SeerInitChoice sic = new SeerInitChoice();
 	robberSwitch rs = new robberSwitch();
 	troublemakerSwitch ts = new troublemakerSwitch();
+	String type = "";
 	int flipback = 0;
 	int flipback2 = 0;
 	int sChoice = 0;
@@ -82,8 +84,6 @@ public class Board extends JPanel {
 		player1 = new JButton();
 		player1.setIcon(back);
 		player1.setText("Player 1");
-//		player1.addActionListener(new playerAL());
-//		player1.setDisabledIcon(new ImageIcon("werewolfcard.jpg"));
 		player1.setEnabled(false);
 		topPanel.add(player1);
 		playerButtons.add(player1);
@@ -91,7 +91,6 @@ public class Board extends JPanel {
 		player2 = new JButton();
 		player2.setText("Player 2");
 		player2.setIcon(back);
-//		player2.addActionListener(new playerAL());
 		player2.setEnabled(false);
 		topPanel.add(player2);
 		playerButtons.add(player2);
@@ -99,19 +98,16 @@ public class Board extends JPanel {
 		//Add three cards to the center 
 		center1 = new JButton();
 		center1.setIcon(back);
-//		center1.addActionListener(new playerAL());
 		center1.setEnabled(false);
 		centerPanel.add(center1);
 		centerButtons.add(center1);
 		center2 = new JButton();
 		center2.setIcon(back);
-//		center2.addActionListener(new playerAL());
 		center2.setEnabled(false);
 		centerPanel.add(center2);
 		centerButtons.add(center2);
 		center3 = new JButton();
 		center3.setIcon(back);
-//		center3.addActionListener(new playerAL());
 		center3.setEnabled(false);
 		centerPanel.add(center3);
 		centerButtons.add(center3);
@@ -120,7 +116,6 @@ public class Board extends JPanel {
 		player3 = new JButton();
 		player3.setText("Player 3");
 		player3.setIcon(back);
-//		player3.addActionListener(new playerAL());
 		player3.setEnabled(false);
 		bottomPanel.add(player3);
 		playerButtons.add(player3);
@@ -175,7 +170,6 @@ public class Board extends JPanel {
 				players.add(new Player());
 				players.get(i).assignRole(roles.get(i));
 			}
-//			System.out.println(players.size());
 				
 			//put 3 remaining cards at center of table
 			for(int i = 0; i < 3; i++) {
@@ -186,42 +180,11 @@ public class Board extends JPanel {
 			startButton.setVisible(false);
 			rc = new RoleCountdown();
 			add(rc, BorderLayout.EAST);
-			
-			for(int i = 0; i < playerButtons.size(); i++) {
-				System.out.println(playerButtons.get(i).getText());
-			}
 		}
 	}
 	
-	private class playerAL implements ActionListener {
-		public void actionPerformed(ActionEvent f) {
-			if (f.getSource().equals(player1)) {
-				player = 1;
-			} else if (f.getSource().equals(player2)) {
-				player = 2;
-			} else if (f.getSource().equals(player3)) {
-				player = 3;
-			} else if (f.getSource().equals(player4)) {
-				player = 4;
-			} else if (f.getSource().equals(player5)) {
-				player = 5;
-			} else if (f.getSource().equals(center1)) {
-				player = 6;
-			} else if (f.getSource().equals(center2)) {
-				player = 7;
-			} else if (f.getSource().equals(center3)) {
-				player = 8;
-			}
-			flip(player);
-		}
-	}
-	
-
-	private class seerAL implements ActionListener {
+	private class SeerInitChoice implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			String type = "";
-			int centerCount = 0;
-			
 			if (e.getSource().equals(seerChoice1)) {
 				type = "players";
 				enableButtons(type, "Seer");
@@ -230,7 +193,16 @@ public class Board extends JPanel {
 				type = "center";
 				enableButtons(type, "Seer");
 				leftPanel.setVisible(false);
-			} else {
+			}
+		}
+	}
+	
+	private class seerAL implements ActionListener {
+		
+		int centerCount = 0;
+		public void actionPerformed(ActionEvent e) {
+			
+			 
 				if(type.equals("players")) {
 					for(int i = 0; i < playerButtons.size(); i++) {
 						if (e.getSource().equals(playerButtons.get(i))) {
@@ -245,43 +217,43 @@ public class Board extends JPanel {
 					for(int i = 0; i < centerButtons.size(); i++) {
 						if (e.getSource().equals(centerButtons.get(i))) {
 							if(centerCount < 2) {
-								flip(i + 1);
-								if(sChoice == 0) flipback = i + 1;
-								else if(sChoice == 1) flipback2 = i + 1;
+								flip(i + 6);
+								if(sChoice == 0) flipback = i + 6;
+								else if(sChoice == 1) flipback2 = i + 6;
 								sChoice++;
 								centerCount++;
 								if(centerCount == 2) enableButtons("disable", "");
 							}
+							System.out.println("sChoice " + sChoice);
 							break;
 						}
 					}
 				}
-			}
+			
+			System.out.println(type);
+			System.out.println("flipback " + flipback);
 		}
 	}
 	
 	private class troublemakerSwitch implements ActionListener {
+		int one = 0;
+		int two = 0;
 		public void actionPerformed (ActionEvent e) {
-			int one = 0;
-			int two = 0;
 			switchClicker++;
-			
 			for (int i = 0; i < playerButtons.size(); i++ ) {
 				if (e.getSource().equals(playerButtons.get(i))) {
-					one = i;
+					playerButtons.get(i).setEnabled(false);
+					
+					if (switchClicker == 1) one = i;
+					else if(switchClicker == 2) two = i;
 				}
 			}
 			if (switchClicker == 2) {
-				for (int i = 0; i < playerButtons.size(); i++ ) {
-					if (e.getSource().equals(playerButtons.get(i))) {
-						two = i;
-					}
-				}
 				temp = players.get(one).getRole();
 				temp2 = players.get(two).getRole();
 				players.get(one).assignRole(temp2);
 				players.get(two).assignRole(temp);
-				switchClicker = 0;
+				enableButtons("disable", "");
 			}
 		}
 	}
@@ -293,6 +265,7 @@ public class Board extends JPanel {
 			int j;
 			for (int i = 0; i < playerButtons.size(); i++) {
 				if (e.getSource().equals(playerButtons.get(i))) {
+					enableButtons("disable", "");
 					one = i;
 					for (j = 0; j < players.size(); j++) {
 						if (players.get(j).getOrigRoleStr() == "Robber") {
@@ -303,45 +276,15 @@ public class Board extends JPanel {
 					temp2 = players.get(two).getRole();
 					players.get(one).assignRole(temp2);
 					players.get(two).assignRole(temp);
-					flip(j + 1);
-					flipback = j + 1;
-					
-//					int count = 5;
-//					RobberCountdown r = new RobberCountdown(count, j+1);
-//					robberTimer = new Timer(1000, r);
-//					robberTimer.start();
-					
+					System.out.println("flip player " + (two+1));
+					flip(two+1);
+					flipback = two+1;					
 					
 				}
 			}
-			//switch roles
-			//view new card
 		}
 	}
-	
-//	public class RobberCountdown implements ActionListener {
-//		int counter;
-//		int robberPosition;
-//			
-//		public RobberCountdown(int counter, int robberInt) {
-//			this.counter = counter;
-//			this.robberPosition = robberInt;
-//		}
-//		
-//		public void actionPerformed (ActionEvent e) {
-//			counter--;
-//			if (counter == 0) {
-//				robberTimer.stop();
-//				flip(robberPosition);
-//				status = false;
-//			}
-//	}
-//	}
-	
-//	public void addPlayerCardTop() {
-//		screenCard = new JLabel(new ImageIcon("werewolfcard.jpg"));
-//		topPanel.add(screenCard);
-//	}
+
 	
 	public void setNumPlayers(int n) {
 		numPlayers = n;
@@ -416,7 +359,6 @@ public class Board extends JPanel {
 			player4 = new JButton();
 			player4.setText("Player 4");
 			player4.setIcon(back);
-//			player4.addActionListener(new playerAL());
 			player4.setEnabled(false);
 			bottomPanel.add(player4);
 			playerButtons.add(player4);
@@ -425,12 +367,10 @@ public class Board extends JPanel {
 			player5 = new JButton();
 			player5.setText("Player 5");
 			player5.setIcon(back);
-//			player5.addActionListener(new playerAL());
 			player5.setEnabled(false);
 			bottomPanel.add(player5);
 			playerButtons.add(player5);
 		}
-	
 	}
 	
 	public void enableButtons(String type, String role) {
@@ -463,9 +403,9 @@ public class Board extends JPanel {
 	
 	public class RoleCountdown extends JPanel {
 		private long beginningDur = 4000;
-		private long showCardDur = 9000;
-		private long roleActionDur = 20000;
-		private long debateDur = 210000;
+		private long showCardDur = 6000; //9000;
+		private long roleActionDur = 12000; //20000;
+		private long debateDur = 12000; //210000;
 		private long seconds = beginningDur;
 		java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("mm:ss");
 		JLabel clock = new JLabel(sdf.format(new Date(seconds)));
@@ -529,6 +469,9 @@ public class Board extends JPanel {
 								for(JButton b : playerButtons) {
 									b.addActionListener(sl);
 								}
+								for(JButton b : centerButtons) {
+									b.addActionListener(sl);
+								}
 								sound = "s_close.wav";
 								break;
 							case 3: //Robber's turn
@@ -561,6 +504,9 @@ public class Board extends JPanel {
 								if(sChoice == 2) flip(flipback2);
 								enableButtons("disable", "");
 								for(JButton b : playerButtons) {
+									b.removeActionListener(sl);
+								}
+								for(JButton b : centerButtons) {
 									b.removeActionListener(sl);
 								}
 								break;
