@@ -54,12 +54,13 @@ public class Board extends JPanel {
 	private boolean gameInProgress = true;
 	
 	seerAL sl = new seerAL();
-	SeerInitChoice sic = new SeerInitChoice();
+//	SeerInitChoice sic = new SeerInitChoice();
 	robberSwitch rs = new robberSwitch();
 	troublemakerSwitch ts = new troublemakerSwitch();
-	String type = "";
+//	String type = "";
 	int flipback = 0;
 	int flipback2 = 0;
+	int flipback3 = 0;
 	int sChoice = 0;
 	
 	ImageIcon back = new ImageIcon("werewolfcard.jpg");
@@ -138,10 +139,10 @@ public class Board extends JPanel {
 		instruction.setLineWrap(true);
 		leftPanel.add(instruction);
 		seerChoice1.setText("A Player's card");
-		seerChoice1.addActionListener(new seerAL());
+		seerChoice1.addActionListener(sl);
 		leftPanel.add(seerChoice1);
 		seerChoice2.setText("Two in the center");
-		seerChoice2.addActionListener(new seerAL());
+		seerChoice2.addActionListener(sl);
 		leftPanel.add(seerChoice2);
 		add(leftPanel, BorderLayout.WEST);
 		leftPanel.setVisible(false);
@@ -185,6 +186,15 @@ public class Board extends JPanel {
 	
 	private class SeerInitChoice implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
+			
+		}
+	}
+	
+	private class seerAL implements ActionListener {
+		String type = "";
+		int centerCount = 0;
+		public void actionPerformed(ActionEvent e) {
+			
 			if (e.getSource().equals(seerChoice1)) {
 				type = "players";
 				enableButtons(type, "Seer");
@@ -193,16 +203,7 @@ public class Board extends JPanel {
 				type = "center";
 				enableButtons(type, "Seer");
 				leftPanel.setVisible(false);
-			}
-		}
-	}
-	
-	private class seerAL implements ActionListener {
-		
-		int centerCount = 0;
-		public void actionPerformed(ActionEvent e) {
-			
-			 
+			} else {
 				if(type.equals("players")) {
 					for(int i = 0; i < playerButtons.size(); i++) {
 						if (e.getSource().equals(playerButtons.get(i))) {
@@ -229,7 +230,7 @@ public class Board extends JPanel {
 						}
 					}
 				}
-			
+			}
 			System.out.println(type);
 			System.out.println("flipback " + flipback);
 		}
@@ -512,7 +513,7 @@ public class Board extends JPanel {
 								break;
 							case 3: //Robber's turn
 								play(sound);
-								flip(flipback);
+								flip(flipback3);
 								enableButtons("disable", "");
 								for(JButton b : playerButtons) {
 									b.removeActionListener(rs);
