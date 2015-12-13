@@ -8,6 +8,7 @@ public class Setup extends JPanel {
 	
 //	JFrame frame;
 	JLabel topLabel;
+	JLabel topLabelPanel;
 	JPanel topPanel;
 	JPanel centerPanel;
 	JButton threeButton;
@@ -22,15 +23,22 @@ public class Setup extends JPanel {
 		setLayout(new BorderLayout());
 		
 		topLabel = new JLabel("Click the number of players.");
+		topLabel.setFont(new Font("Copperplate Gothic Bold", Font.PLAIN, 35));
+//		topLabelPanel.setLayout(new BorderLayout());
+//		topLabelPanel.add(topLabel, BorderLayout.CENTER);
 		topPanel = new JPanel();
 		topPanel.setLayout(new BorderLayout());
-		topPanel.add(topLabel, BorderLayout.CENTER);
+		topPanel.add(topLabel, BorderLayout.NORTH);
+		
 		centerPanel = new JPanel();
 		centerPanel.setLayout(new FlowLayout());
 		
 		threeButton = new JButton("3 players");
+		threeButton.setFont(new Font("Copperplate Gothic Bold", Font.PLAIN, 20));
 		fourButton = new JButton("4 players");
+		fourButton.setFont(new Font("Copperplate Gothic Bold", Font.PLAIN, 20));
 		fiveButton = new JButton("5 players");
+		fiveButton.setFont(new Font("Copperplate Gothic Bold", Font.PLAIN, 20));
 		
 		centerPanel.add(threeButton);
 		centerPanel.add(fourButton);
