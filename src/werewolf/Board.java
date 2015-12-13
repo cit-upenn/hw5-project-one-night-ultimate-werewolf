@@ -57,12 +57,6 @@ public class Board extends JPanel {
 	private boolean flip = false;
 
 	ImageIcon back;
-	// ImageIcon back = new ImageIcon("werewolfcard.jpg");
-	// ImageIcon scard = new ImageIcon("Seer.jpg");
-	// ImageIcon wcard = new ImageIcon("WerewolfRole.jpg");
-	// ImageIcon rcard = new ImageIcon("Robber.jpg");
-	// ImageIcon tcard = new ImageIcon("Troublemaker.jpg");
-	// ImageIcon vcard = new ImageIcon("Villager-Werewolves.jpg");
 
 	seerAL sl = new seerAL();
 	robberSwitch rs = new robberSwitch();

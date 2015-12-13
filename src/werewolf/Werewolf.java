@@ -4,11 +4,7 @@
  */
 package werewolf;
 
-import java.util.ArrayList;
-import java.util.Scanner;
-
 public class Werewolf implements Role {
-//	private ArrayList<Integer> choice = new ArrayList<Integer>();
 	
 	@Override
 	public String getRoleStr() {
@@ -19,11 +15,5 @@ public class Werewolf implements Role {
 	public String imageFile() {
 		return "WerewolfRole.jpg";
 	}
-	
-//	@Override
-//	public ArrayList<Integer> wakeUp(int numOfPlayers, int ID, Scanner in) {
-//		// TODO Auto-generated method stub
-//		return choice;
-//	}
 
 }
