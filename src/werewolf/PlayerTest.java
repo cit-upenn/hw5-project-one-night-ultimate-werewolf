@@ -2,6 +2,8 @@ package werewolf;
 
 import static org.junit.Assert.*;
 
+import javax.swing.JButton;
+
 import org.junit.Test;
 
 public class PlayerTest {
@@ -13,7 +15,5 @@ public class PlayerTest {
 		p1.assignRole(werewolf);
 		assertEquals("Player should be a Werewolf", p1.getImage(), "WerewolfRole.jpg");
 	}
-	
-	
 
 }

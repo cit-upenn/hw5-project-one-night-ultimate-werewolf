@@ -35,5 +35,23 @@ public class BoardTest {
 		assertEquals("Instruction isVisible should be false", false, leftPanel.isVisible());
 	}
 	
+	@Test
+	public void numPlayersTest() {
+		Board board = new Board();
+		board.startButton.doClick();
+		int p = board.getNumPlayers();
+		assertEquals("The size of roles ArrayList should equal number of players", p, board.getPlayersList().size());
+	}
+	
+	@Test
+	public void numPanelsTest() {
+		Board board = new Board();
+		board.startButton.doClick();
+		int p = board.getComponentCount();
+		assertEquals("There should be 6 panels on Game Board", 6, p);
+	}
+	
+	
+	
 
 }

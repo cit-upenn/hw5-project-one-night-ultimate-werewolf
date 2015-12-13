@@ -54,6 +54,16 @@ public class Board extends JPanel {
 	SeerAL sl = new SeerAL();
 	RobberAL rl = new RobberAL();
 	TroublemakerAL tl = new TroublemakerAL();
+	
+	
+	/**
+	 * Gets players ArrayList
+	 * @return players ArrayList
+	 * Method was created for Unit Testing 
+	 */
+	public ArrayList<Player> getPlayersList () {
+		return players;
+	}
 
 	/**
 	 * The constructor of this class 
@@ -307,6 +317,15 @@ public class Board extends JPanel {
 	public void setNumPlayers(int n) {
 		numPlayers = n;
 	}
+	
+	/**
+	 * Gets the number of players playing in current game
+	 * @return number of current players
+	 * Method created for Unit Testing
+	 */
+	public int getNumPlayers() {
+		return numPlayers;
+	}
 
 	/**
 	 * Flips the card to show the other side
@@ -429,6 +448,7 @@ public class Board extends JPanel {
 			}
 		}
 	}
+	
 
 	/**
 	 * This class is a panel that holds the timer for the entire game.
@@ -484,6 +504,7 @@ public class Board extends JPanel {
 				k.printStackTrace(); 
 			}
 		}
+		
 
 		/**
 		 * 
