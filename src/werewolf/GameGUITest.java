@@ -37,6 +37,12 @@ public class GameGUITest {
 		assertEquals("Size should return 5", 5, size);
 	}
 	
+	/**
+	 * DOES NOT WORK WHEN NONE OF THE PLAYERS ARE ASSIGNED THE ROBBER.
+	 * WHEN RUNNING THE TEST, IF YOU SEE ALL PLAYER BUTTONS ARE ENABLED (IN COLOR),
+	 * NO ONE WAS ASSIGNED THE ROBBER DUE TO RANDOM SHUFFLING
+	 * THIS IS FINE SINCE IF NO ONE IS THE ROBBER, NO ACTIONS SHOULD BE TAKEN ANYWAY
+	 */
 	@Test
 	public void robberSwitchTest() {
 		String role = "";
@@ -68,10 +74,14 @@ public class GameGUITest {
 	}
 	
 	@Test
-	public void numGamePanelsTest() {
+	public void numBoardsTest() {
 		GameGUI gui = new GameGUI();
 		int p = gui.gamePanel.getComponentCount();
 		assertEquals("There should only be 2 boards - setup and game boards", 2, p);
 	}
+	
+	
+	
+	
 
 }
