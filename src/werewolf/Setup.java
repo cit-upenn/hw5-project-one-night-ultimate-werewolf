@@ -1,3 +1,8 @@
+/*
+ * This class creates JPanel with Setup Screen. 
+ * The screen asks user to click how many players to include for this game.
+ * User can choose from 3-5 players.
+ */
 package werewolf;
 
 import javax.swing.*;
@@ -6,7 +11,6 @@ import java.util.*;
 
 public class Setup extends JPanel {
 	
-//	JFrame frame;
 	JLabel topLabel;
 	JLabel topLabelPanel;
 	JPanel topPanel;
@@ -15,17 +19,15 @@ public class Setup extends JPanel {
 	JButton fourButton;
 	JButton fiveButton;
 	
+	/*
+	 * The constructor for this class
+	 */
 	public Setup () {
-//		frame = new JFrame("One Night Ultimate Werewolf");
-//		frame.setLayout(new BorderLayout());
-//		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		setLayout(new BorderLayout());
 		
 		topLabel = new JLabel("Click the number of players.");
 		topLabel.setFont(new Font("Copperplate Gothic Bold", Font.PLAIN, 35));
-//		topLabelPanel.setLayout(new BorderLayout());
-//		topLabelPanel.add(topLabel, BorderLayout.CENTER);
 		topPanel = new JPanel();
 		topPanel.setLayout(new BorderLayout());
 		topPanel.add(topLabel, BorderLayout.NORTH);
@@ -49,17 +51,6 @@ public class Setup extends JPanel {
 		
 		setVisible(true);
 		
-//		frame.add(topPanel, BorderLayout.NORTH);
-//		frame.add(centerPanel, BorderLayout.CENTER);
-		
-//		frame.setSize(800, 650);
-//		frame.setVisible(true);
 	}
-	
-//	public static void main(String[] args) {
-//		StartBoardGUI startgui = new StartBoardGUI();
-//		
-//	}
-	
 
 }

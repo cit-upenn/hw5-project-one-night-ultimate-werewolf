@@ -1,3 +1,7 @@
+/**
+ * This class displays the interactive Game Board of One Night Ultimate Werewolf.
+ * Users carry out Night and Day Phases on this board.
+ */
 package werewolf;
 
 import javax.swing.*;
@@ -17,70 +21,84 @@ import java.util.*;
 
 
 public class Board extends JPanel {
-	
-	/*
-	 * Instance Variables 
-	 */
-	JPanel topPanel = new JPanel();
-	JPanel centerPanel = new JPanel();
-	JPanel bottomPanel = new JPanel();
-	JPanel leftPanel = new JPanel();
-	JTextArea instruction = new JTextArea(5,12);
-//	JLabel screenCard = new JLabel();
-//	JLabel screenCard2 = new JLabel();
-	RoleCard rolecard = new RoleCard();
-	JButton startButton = new JButton();
+
+	private JPanel topPanel;
+	private JPanel centerPanel;
+	private JPanel bottomPanel;
+	private JPanel leftPanel;
+
+	JTextArea instruction;
+	JButton startButton;
 	JButton player1, player2, player3, player4, player5;
-	ArrayList<JButton> playerButtons = new ArrayList<JButton>();
-	ArrayList<JButton> centerButtons = new ArrayList<JButton>();
 	JButton center1, center2, center3;
-	JButton seerChoice1 = new JButton();
-	JButton seerChoice2 = new JButton();
-	RoleCountdown rc;
-	private boolean flip = false;
-	private int player, numPlayers;
-	
-	private ArrayList<Role> roles = new ArrayList<Role>();
-	private ArrayList<Role> center = new ArrayList<Role>();
-	private ArrayList<Player> players = new ArrayList<Player>();
-	private int turnDuringGame = 1;
-	private ArrayList<Integer> choice = new ArrayList<Integer>();
-	private int c, c2;
+	JButton seerChoice1;
+	JButton seerChoice2;
+	ArrayList<JButton> playerButtons;
+	ArrayList<JButton> centerButtons;
+
+	private ArrayList<Role> roles;
+	private ArrayList<Role> center;
+	private ArrayList<Player> players;
+	private ArrayList<Integer> choice;
 	private Role temp, temp2;
 	private String name;
-	private int switchClicker = 0;
-	private boolean status = true;
+
+	RoleCountdown rc;
 	Timer robberTimer;
-	private boolean gameInProgress = true;
-	
-	seerAL sl = new seerAL();
-//	SeerInitChoice sic = new SeerInitChoice();
-	robberSwitch rs = new robberSwitch();
-	troublemakerSwitch ts = new troublemakerSwitch();
-//	String type = "";
+
+	private int player, numPlayers;
+	private int c, c2;
+	private int turnDuringGame = 1;	
+	private int switchClicker = 0;
 	int flipback = 0;
 	int flipback2 = 0;
 	int flipback3 = 0;
 	int sChoice = 0;
-	
-	ImageIcon back = new ImageIcon("werewolfcard.jpg");
-	ImageIcon scard = new ImageIcon("Seer.jpg");
-	ImageIcon wcard = new ImageIcon("WerewolfRole.jpg");
-	ImageIcon rcard = new ImageIcon("Robber.jpg");
-	ImageIcon tcard = new ImageIcon("Troublemaker.jpg");
-	ImageIcon vcard = new ImageIcon("Villager-Werewolves.jpg");
-	
+	private boolean flip = false;
+
+	ImageIcon back;
+	// ImageIcon back = new ImageIcon("werewolfcard.jpg");
+	// ImageIcon scard = new ImageIcon("Seer.jpg");
+	// ImageIcon wcard = new ImageIcon("WerewolfRole.jpg");
+	// ImageIcon rcard = new ImageIcon("Robber.jpg");
+	// ImageIcon tcard = new ImageIcon("Troublemaker.jpg");
+	// ImageIcon vcard = new ImageIcon("Villager-Werewolves.jpg");
+
+	seerAL sl = new seerAL();
+	robberSwitch rs = new robberSwitch();
+	troublemakerSwitch ts = new troublemakerSwitch();
+
 	/**
 	 * The constructor of this class 
 	 */
 	public Board () {
-		
+
+		//Initialize Instance Variables
+		topPanel = new JPanel();
+		centerPanel = new JPanel();
+		bottomPanel = new JPanel();
+		leftPanel = new JPanel();
+
+		instruction = new JTextArea(5,12);
+		startButton = new JButton();
+		playerButtons = new ArrayList<JButton>();
+		centerButtons = new ArrayList<JButton>();
+		seerChoice1 = new JButton();
+		seerChoice2 = new JButton();
+
+		roles = new ArrayList<Role>();
+		center = new ArrayList<Role>();
+		players = new ArrayList<Player>();
+		choice = new ArrayList<Integer>();
+
+		back = new ImageIcon("werewolfcard.jpg");
+
 		//Set layouts of each panel
 		topPanel.setLayout(new FlowLayout());
 		centerPanel.setLayout(new FlowLayout());
 		bottomPanel.setLayout(new FlowLayout());
 		leftPanel.setLayout(new FlowLayout());
-		
+
 		//Add two cards to the top
 		player1 = new JButton();
 		player1.setIcon(back);
@@ -88,14 +106,14 @@ public class Board extends JPanel {
 		player1.setEnabled(false);
 		topPanel.add(player1);
 		playerButtons.add(player1);
-		
+
 		player2 = new JButton();
 		player2.setText("Player 2");
 		player2.setIcon(back);
 		player2.setEnabled(false);
 		topPanel.add(player2);
 		playerButtons.add(player2);
-		
+
 		//Add three cards to the center 
 		center1 = new JButton();
 		center1.setIcon(back);
@@ -112,7 +130,7 @@ public class Board extends JPanel {
 		center3.setEnabled(false);
 		centerPanel.add(center3);
 		centerButtons.add(center3);
-		
+
 		//Add card to the bottom
 		player3 = new JButton();
 		player3.setText("Player 3");
@@ -123,17 +141,16 @@ public class Board extends JPanel {
 
 		//Set layout of and add components to main content panel
 		setLayout(new BorderLayout());
-
 		add(topPanel, BorderLayout.NORTH);
 		add(centerPanel, BorderLayout.CENTER);
 		add(bottomPanel, BorderLayout.SOUTH);
-		
+
 		//Add start button 
 		startButton.setText("Start Game");
 		startButton.addActionListener(new startButtonAL());
 		add(startButton, BorderLayout.EAST);
-		
-		//Add Seer's choice buttons
+
+		//Add Seer's initial choice buttons to left of frame
 		leftPanel.setPreferredSize(new Dimension(150, 480));
 		instruction.setText("Would you like to look at another player's card, or two cards in the center?");
 		instruction.setLineWrap(true);
@@ -146,10 +163,13 @@ public class Board extends JPanel {
 		leftPanel.add(seerChoice2);
 		add(leftPanel, BorderLayout.WEST);
 		leftPanel.setVisible(false);
-			
+
 	}
 
-
+	/**
+	 * An ActionListener that generates roles and players in the game
+	 * Event occurs when Start Button is clicked
+	 */
 	private class startButtonAL implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			roles.add(new Werewolf());
@@ -164,37 +184,39 @@ public class Board extends JPanel {
 				roles.add(new Villager());
 				roles.add(new Villager());
 			}
-			
-			//generate players & assign cards
+
+			//generate players & assign roles randomly
 			Collections.shuffle(roles);
 			for(int i = 0; i < numPlayers; i++) {
 				players.add(new Player());
 				players.get(i).assignRole(roles.get(i));
 			}
-				
-			//put 3 remaining cards at center of table
+
+			//put 3 remaining roles at center 
 			for(int i = 0; i < 3; i++) {
 				center.add(roles.get(numPlayers));
 				roles.remove(numPlayers);
 			}
-			
-			startButton.setVisible(false);
+
+			//call RoleCountdown to start game play
 			rc = new RoleCountdown();
+
+			//add Start Button to frame's content panel
+			startButton.setVisible(false);
 			add(rc, BorderLayout.EAST);
 		}
 	}
-	
-	private class SeerInitChoice implements ActionListener {
-		public void actionPerformed(ActionEvent e) {
-			
-		}
-	}
-	
+
+	/**
+	 * ActionListener that carries out Seer's actions during game play
+	 * Actions include choosing one of the two buttons in instructions,
+	 * and then choosing which cards to flip
+	 */
 	private class seerAL implements ActionListener {
 		String type = "";
 		int centerCount = 0;
 		public void actionPerformed(ActionEvent e) {
-			
+
 			if (e.getSource().equals(seerChoice1)) {
 				type = "players";
 				enableButtons(type, "Seer");
@@ -225,17 +247,18 @@ public class Board extends JPanel {
 								centerCount++;
 								if(centerCount == 2) enableButtons("disable", "");
 							}
-							System.out.println("sChoice " + sChoice);
 							break;
 						}
 					}
 				}
 			}
-			System.out.println(type);
-			System.out.println("flipback " + flipback);
 		}
 	}
-	
+
+	/**
+	 * An ActionListener that switches two cards that TroubleMaker choose
+	 *
+	 */
 	private class troublemakerSwitch implements ActionListener {
 		int one = 0;
 		int two = 0;
@@ -244,7 +267,7 @@ public class Board extends JPanel {
 			for (int i = 0; i < playerButtons.size(); i++ ) {
 				if (e.getSource().equals(playerButtons.get(i))) {
 					playerButtons.get(i).setEnabled(false);
-					
+
 					if (switchClicker == 1) one = i;
 					else if(switchClicker == 2) two = i;
 				}
@@ -258,7 +281,13 @@ public class Board extends JPanel {
 			}
 		}
 	}
-	
+
+	/**
+	 * An ActionListener that switches Robber's Card with card of their choice, 
+	 * then flips Robber's new card.
+	 *
+	 */
+
 	public class robberSwitch implements ActionListener {
 		public void actionPerformed (ActionEvent e) {
 			int one = 0;
@@ -277,84 +306,94 @@ public class Board extends JPanel {
 					temp2 = players.get(two).getRole();
 					players.get(one).assignRole(temp2);
 					players.get(two).assignRole(temp);
-					System.out.println("flip player " + (two+1));
 					flip(two+1);
 					flipback3 = two+1;					
-					
+
 				}
 			}
 		}
 	}
 
-	
+	/**
+	 * Sets the number of players playing in current game
+	 * @param n number of current players
+	 */
 	public void setNumPlayers(int n) {
 		numPlayers = n;
 	}
-	
+
+	/**
+	 * Flips the card to show the other side
+	 * @param player the "index" of the player whose card to flip
+	 */
 	public void flip(int player) {
-		
+
 		switch(player) {
-			case 1:
-				if (player1.getIcon() == back) {
-					player1.setIcon(new ImageIcon(players.get(0).getImage()));
-				} else {
-					player1.setIcon(back);
-				}
-				break;
-			case 2:
-				if (player2.getIcon() == back) {
-					player2.setIcon(new ImageIcon(players.get(1).getImage()));
-				} else {
-					player2.setIcon(back);
-				}
-				break;
-			case 3:
-				if (player3.getIcon() == back) {
-					player3.setIcon(new ImageIcon(players.get(2).getImage()));
-				} else {
-					player3.setIcon(back);
-				}
-				break;
-			case 4:
-				if (player4.getIcon() == back) {
-					player4.setIcon(new ImageIcon(players.get(3).getImage()));
-				} else {
-					player4.setIcon(back);
-				}
-				break;
-			case 5:
-				if (player5.getIcon() == back) {
-					player5.setIcon(new ImageIcon(players.get(4).getImage()));
-				} else {
-					player5.setIcon(back);
-				}
-				break;
-			case 6:
-				if (center1.getIcon() == back) {
-					center1.setIcon(new ImageIcon(center.get(0).imageFile()));
-				} else {
-					center1.setIcon(back);
-				}
-				break;
-			case 7:
-				if (center2.getIcon() == back) {
-					center2.setIcon(new ImageIcon(center.get(1).imageFile()));
-				} else {
-					center2.setIcon(back);
-				}
-				break;
-			case 8:
-				if (center3.getIcon() == back) {
-					center3.setIcon(new ImageIcon(center.get(2).imageFile()));
-				} else {
-					center3.setIcon(back);
-				}
-				break;
+		case 1:
+			if (player1.getIcon() == back) {
+				player1.setIcon(new ImageIcon(players.get(0).getImage()));
+			} else {
+				player1.setIcon(back);
+			}
+			break;
+		case 2:
+			if (player2.getIcon() == back) {
+				player2.setIcon(new ImageIcon(players.get(1).getImage()));
+			} else {
+				player2.setIcon(back);
+			}
+			break;
+		case 3:
+			if (player3.getIcon() == back) {
+				player3.setIcon(new ImageIcon(players.get(2).getImage()));
+			} else {
+				player3.setIcon(back);
+			}
+			break;
+		case 4:
+			if (player4.getIcon() == back) {
+				player4.setIcon(new ImageIcon(players.get(3).getImage()));
+			} else {
+				player4.setIcon(back);
+			}
+			break;
+		case 5:
+			if (player5.getIcon() == back) {
+				player5.setIcon(new ImageIcon(players.get(4).getImage()));
+			} else {
+				player5.setIcon(back);
+			}
+			break;
+		case 6:
+			if (center1.getIcon() == back) {
+				center1.setIcon(new ImageIcon(center.get(0).imageFile()));
+			} else {
+				center1.setIcon(back);
+			}
+			break;
+		case 7:
+			if (center2.getIcon() == back) {
+				center2.setIcon(new ImageIcon(center.get(1).imageFile()));
+			} else {
+				center2.setIcon(back);
+			}
+			break;
+		case 8:
+			if (center3.getIcon() == back) {
+				center3.setIcon(new ImageIcon(center.get(2).imageFile()));
+			} else {
+				center3.setIcon(back);
+			}
+			break;
 		}
 
 	}
-	
-	
+
+
+	/**
+	 * Adds new player card to the bottom of the Game Board Panel
+	 * Also adds player button to ArrayList of player buttons
+	 */
 	public void addPlayerCardBottom() {
 		if (numPlayers >= 4) {
 			player4 = new JButton();
@@ -373,7 +412,12 @@ public class Board extends JPanel {
 			playerButtons.add(player5);
 		}
 	}
-	
+
+	/**
+	 * Enables or disables certain buttons depending on parameters
+	 * @param type name of group of buttons to disenable/enable
+	 * @param role role that specifies each role in game whose buttons to disenable/enable
+	 */
 	public void enableButtons(String type, String role) {
 		if(type.equals("disable")) {
 			for(int j = 0; j < playerButtons.size(); j++) {
@@ -391,7 +435,6 @@ public class Board extends JPanel {
 			for(int j = 0; j < players.size(); j++) {
 				if(players.get(j).getOrigRoleStr().equals(role)) {
 					player = j;
-					System.out.println("player " + player);
 				}
 			}
 			for(int i = 0; i < playerButtons.size(); i++) {
@@ -400,50 +443,73 @@ public class Board extends JPanel {
 			}
 		}
 	}
-	
-	
+
+	/**
+	 * This class is a panel that holds the timer for the entire game.
+	 * Sequences of events of Night and Day Phases are regulated by this timer.
+	 *
+	 */
 	public class RoleCountdown extends JPanel {
 		private long beginningDur = 4000;
 		private long showCardDur = 9000;
 		private long roleActionDur = 20000;
 		private long debateDur = 210000;
 		private long seconds = beginningDur;
-		java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("mm:ss");
-		JLabel clock = new JLabel(sdf.format(new Date(seconds)));
+		java.text.SimpleDateFormat sdf;
+		JLabel clock;
 		Timer rcountdown;
 		int phase = 1;
 		int timerTurn = 1;
 		String sound = "everyone.wav";
 		InputStream in;
 		AudioStream audioStream;
-		
+
+		/*
+		 * The constructor for this class
+		 */
 		public RoleCountdown() {
+			//Initialize Instance Variables
+			sdf = new java.text.SimpleDateFormat("mm:ss");
+			clock = new JLabel(sdf.format(new Date(seconds)));
+
+			// Set layout of panel and add clock to display time
 			setLayout(new BorderLayout());
 			add(clock, BorderLayout.CENTER);
+
+			// Create new timer with RoleTimer() as ActionEvent
+			// Start timer
 			rcountdown = new Timer(1000, new RoleTimer());
 			rcountdown.start();
 			setVisible(true);
 		}
-		
-		
+
+		/**
+		 * Plays sound clip
+		 * @param fileName name of sound clip file to play
+		 */
 		public void play(String fileName) {
 			try {
 				in = new FileInputStream(fileName);
 				audioStream = new AudioStream(in);
 				AudioPlayer.player.start(audioStream);
 			} catch (FileNotFoundException k) {
-			    k.printStackTrace(); 
+				k.printStackTrace(); 
 			} catch (IOException k) {
 				k.printStackTrace(); 
 			}
 		}
-		
-		
+
+		/**
+		 * 
+		 * ActionListener that carries out sequence of events of Night and Day Phases
+		 *
+		 */
 		public class RoleTimer implements ActionListener {
 			public void actionPerformed(ActionEvent e) {
 				clock.setText(sdf.format(new Date(seconds)));
 				seconds -= 1000;
-				
+
+				//Carries out sequence of revealing every player's card to themselves
 				if(phase == 1) {
 					if(timerTurn == 1) {
 						if(seconds == beginningDur - 1000) play(sound);
@@ -457,79 +523,89 @@ public class Board extends JPanel {
 							play(sound);
 						}
 					}
+
+					// Carries out Night Phase 
+					// Plays sound clips of instructions for each role's turn
+					// Adds Seer, Robber, and Troublemaker ActionListeners accordingly
+					// Enables certain cards to be clicked according to role
 				} else if(phase == 2) {
 					if(seconds == roleActionDur - 1000) {
 						switch(timerTurn) {
-							case 1: //Werewolves' turn
-								play(sound);
-								sound = "w_close.wav";
-								break;
-							case 2: //Seer's turn
-								play(sound);
-								leftPanel.setVisible(true);
-								for(JButton b : playerButtons) {
-									b.addActionListener(sl);
-								}
-								for(JButton b : centerButtons) {
-									b.addActionListener(sl);
-								}
-								sound = "s_close.wav";
-								break;
-							case 3: //Robber's turn
-								play(sound);
-								enableButtons("players", "Robber");
-								for(JButton b : playerButtons) {
-									b.addActionListener(rs);
-								}
-								sound = "r_close.wav";
-								break;
-							case 4: //Troublemaker's turn
-								play(sound);
-								enableButtons("players", "Troublemaker");
-								for(JButton b : playerButtons) {
-									b.addActionListener(ts);
-								}
-								sound = "t_close.wav";
-								break;
+						case 1: //Werewolves' turn
+							play(sound);
+							sound = "w_close.wav";
+							break;
+						case 2: //Seer's turn
+							play(sound);
+							leftPanel.setVisible(true);
+							for(JButton b : playerButtons) {
+								b.addActionListener(sl);
+							}
+							for(JButton b : centerButtons) {
+								b.addActionListener(sl);
+							}
+							sound = "s_close.wav";
+							break;
+						case 3: //Robber's turn
+							play(sound);
+							enableButtons("players", "Robber");
+							for(JButton b : playerButtons) {
+								b.addActionListener(rs);
+							}
+							sound = "r_close.wav";
+							break;
+						case 4: //Troublemaker's turn
+							play(sound);
+							enableButtons("players", "Troublemaker");
+							for(JButton b : playerButtons) {
+								b.addActionListener(ts);
+							}
+							sound = "t_close.wav";
+							break;
 						}
-					
+						// Plays sound clips of instructions for current player
+						// Removes Seer, Robber, and Troublemaker ActionListeners accordingly
+						// Disables buttons towards end of current player's turn
 					} else if(seconds == 2000) {
 						switch(timerTurn) {
-							case 1: //Werewolves' turn
-								play(sound);
-								break;
-							case 2: //Seer's turn
-								play(sound);
-								leftPanel.setVisible(false);
-								flip(flipback);
-								if(sChoice == 2) flip(flipback2);
-								enableButtons("disable", "");
-								for(JButton b : playerButtons) {
-									b.removeActionListener(sl);
-								}
-								for(JButton b : centerButtons) {
-									b.removeActionListener(sl);
-								}
-								break;
-							case 3: //Robber's turn
-								play(sound);
-								flip(flipback3);
-								enableButtons("disable", "");
-								for(JButton b : playerButtons) {
-									b.removeActionListener(rs);
-								}
-								break;
-							case 4: //Troublemaker's turn
-								play(sound);
-								enableButtons("disable", "");
-								for(JButton b : playerButtons) {
-									b.removeActionListener(ts);
-								}
-								break;
+						case 1: //Werewolves' turn
+							play(sound);
+							break;
+						case 2: //Seer's turn
+							play(sound);
+							leftPanel.setVisible(false);
+							flip(flipback);
+							if(sChoice == 2) flip(flipback2);
+							enableButtons("disable", "");
+							for(JButton b : playerButtons) {
+								b.removeActionListener(sl);
+							}
+							for(JButton b : centerButtons) {
+								b.removeActionListener(sl);
+							}
+							break;
+						case 3: //Robber's turn
+							play(sound);
+							flip(flipback3);
+							enableButtons("disable", "");
+							for(JButton b : playerButtons) {
+								b.removeActionListener(rs);
+							}
+							break;
+						case 4: //Troublemaker's turn
+							play(sound);
+							enableButtons("disable", "");
+							for(JButton b : playerButtons) {
+								b.removeActionListener(ts);
+							}
+							break;
 						}
 					}
+					// Carries out Day Phase 
+					// Plays sound clips for start and end of Day Phase 
+					// Reveal all cards at end of Day Phase 
 				} else if(phase == 3) {
-					
+
 					if(seconds == debateDur - 1000) {
 						sound = "e_wakeup.wav";
 						play(sound);
@@ -548,35 +624,37 @@ public class Board extends JPanel {
 						}
 					}
 				}
-				
+
 				if (seconds >= 1000) {
 					clock.setText(sdf.format(new Date(seconds)));
 				} else {
 					clock.setText(sdf.format(new Date(seconds)));
 					rcountdown.stop();
-					
+
+					// Assigns which sound clips to play depending on whose turn it is
+					// These sound clips instruct current player to open their eyes
 					if(phase == 1) {
 						seconds = showCardDur;
 						if(timerTurn - 1 <= numPlayers ) {
 							rcountdown.restart();
 							switch(timerTurn) {
-								case 1:
-									sound = "player1.wav";
-									break;
-								case 2:
-									sound = "player2.wav";
-									break;
-								case 3:
-									sound = "player3.wav";
-									break;
-								case 4:
-									sound = "player4.wav";
-									break;
-								case 5:
-									sound = "player5.wav";
-									break;
+							case 1:
+								sound = "player1.wav";
+								break;
+							case 2:
+								sound = "player2.wav";
+								break;
+							case 3:
+								sound = "player3.wav";
+								break;
+							case 4:
+								sound = "player4.wav";
+								break;
+							case 5:
+								sound = "player5.wav";
+								break;
 							}
-						
+
 							timerTurn++;
 							if(timerTurn - 1 > numPlayers) {
 								timerTurn = 1;
@@ -585,32 +663,34 @@ public class Board extends JPanel {
 								sound = "w_wakeup.wav";
 							}
 						}
+						//Assigns which sound clips to play depending on current role
+						// These sound clips instruct role to carry out their Night Phase action
 					} else if(phase == 2) {
 						seconds = roleActionDur;
 						rcountdown.restart();
 						if(timerTurn - 1 <= numPlayers ) {
 							switch(timerTurn) {
-								case 1:
-									sound = "s_wakeup.wav";
-									break;
-								case 2:
-									sound = "r_wakeup.wav";
-									break;
-								case 3:
-									sound = "t_wakeup.wav";
-									break;
+							case 1:
+								sound = "s_wakeup.wav";
+								break;
+							case 2:
+								sound = "r_wakeup.wav";
+								break;
+							case 3:
+								sound = "t_wakeup.wav";
+								break;
 							}
 							timerTurn++;
 							if(timerTurn - 1 > 3) {
 								timerTurn = 1;
 								seconds = debateDur;
 								phase++;
-								
+
 							}
 						}
 					}
-					
-					
+
+
 				}
 			}
 		}

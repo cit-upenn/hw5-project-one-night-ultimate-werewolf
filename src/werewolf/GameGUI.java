@@ -46,13 +46,10 @@ public class GameGUI extends JFrame  {
 		
 		cardLayout = (CardLayout) gamePanel.getLayout();
 		cardLayout.show(gamePanel, "Setup Board");
-//		cardLayout.first(gamePanel);
 		
 		setup.threeButton.addActionListener(new generateAL());
 		setup.fourButton.addActionListener(new generateAL());
 		setup.fiveButton.addActionListener(new generateAL());
-		
-//		board.player1.addActionListener(new revealAL());
 		
 		gameFrame.pack();
 		gameFrame.setVisible(true);
@@ -79,13 +76,5 @@ public class GameGUI extends JFrame  {
 			cardLayout.show(gamePanel, "Game Board");
 		}
 	}	
-
-		
-		
-		public static void main(String[] args) {
-			GameGUI game = new GameGUI();
-			
-		}
-		
 		
 }

@@ -1,12 +1,13 @@
+/**
+ * This class runs the game of One Night Ultimate Werewolf.
+ */
 package werewolf;
 
 public class GameTester {
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		Game game = new Game();
 		
-		game.play();
+		GameGUI game = new GameGUI();
+		
 	}
-
 }
