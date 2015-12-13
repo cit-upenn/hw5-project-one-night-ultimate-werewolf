@@ -218,7 +218,7 @@ public class Board extends JPanel {
 			} else if (e.getSource().equals(seerChoice2)) {
 				type = "center";
 				enableButtons(type, "Seer");
-				instruction.setVisible(false);
+				leftPanel.setVisible(false);
 			} else {
 				if(type.equals("players")) {
 					for(int i = 0; i < playerButtons.size(); i++) {
@@ -489,7 +489,7 @@ public class Board extends JPanel {
 								break;
 							case 2: //Seer's turn
 								play(sound);
-								instruction.setVisible(true);
+								leftPanel.setVisible(true);
 								for(JButton b : playerButtons) {
 									b.addActionListener(sl);
 								}
@@ -515,8 +515,12 @@ public class Board extends JPanel {
 					
 					} else if(seconds == 2000) {
 						switch(timerTurn) {
+							case 1: //Werewolves' turn
+								play(sound);
+								break;
 							case 2: //Seer's turn
 								play(sound);
+								leftPanel.setVisible(false);
 								flip(flipback);
 								if(sChoice == 2) flip(flipback2);
 								for(JButton b : playerButtons) {
@@ -598,9 +602,8 @@ public class Board extends JPanel {
 						}
 					} else if(phase == 2) {
 						seconds = roleActionDur;
-						
-						if(timerTurn <= numPlayers ) {
-							rcountdown.restart();
+						rcountdown.restart();
+						if(timerTurn - 1 <= numPlayers ) {
 							switch(timerTurn) {
 								case 1:
 									sound = "s_wakeup.wav";
@@ -613,9 +616,11 @@ public class Board extends JPanel {
 									break;
 							}
 							timerTurn++;
-							if(timerTurn == 4) {
+							if(timerTurn - 1 > 3) {
 								timerTurn = 1;
+								seconds = debateDur;
 								phase++;
+								
 							}
 						}
 					}
