@@ -53,6 +53,13 @@ public class Board extends JPanel {
 	Timer robberTimer;
 	private boolean gameInProgress = true;
 	
+	seerAL sl = new seerAL();
+	robberSwitch rs = new robberSwitch();
+	troublemakerSwitch ts = new troublemakerSwitch();
+	int flipback = 0;
+	int flipback2 = 0;
+	int sChoice = 0;
+	
 	/**
 	 * The constructor of this class 
 	 */
@@ -136,36 +143,9 @@ public class Board extends JPanel {
 		leftPanel.add(seerChoice2);
 		add(leftPanel, BorderLayout.WEST);
 		leftPanel.setVisible(false);
-		
-		System.out.println(playerButtons.size());
-		//Add ActionListeners for Robber and Troublemaker
-		for (JButton b : playerButtons) {
-			robberSwitch rs = new robberSwitch();
-			troublemakerSwitch ts = new troublemakerSwitch();
-			if (status == true) {
-				b.addActionListener(rs);
-				System.out.println(b.getText());
-			} else {
-				b.removeActionListener(rs);
-				b.addActionListener(ts);
-			}
-		}
-		
-		if (gameInProgress = false) {
-			//WerewolfTimer 
-			WerewolfCountdown wc = new WerewolfCountdown();
-			//Disable Buttons 
-		}
 			
 	}
-	
-	public void setRobberButton () {
-		for (Player p : players) {
-			if (p.getRoleStr().equals("Robber")) {
-//				int 
-			}
-		}
-	}
+
 
 	private class startButtonAL implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
@@ -244,6 +224,8 @@ public class Board extends JPanel {
 					for(int i = 0; i < playerButtons.size(); i++) {
 						if (e.getSource().equals(playerButtons.get(i))) {
 							flip(i + 1);
+							flipback = i + 1;
+							sChoice = 1;
 							enableButtons("disable", "");
 							break;
 						}
@@ -253,6 +235,9 @@ public class Board extends JPanel {
 						if (e.getSource().equals(centerButtons.get(i))) {
 							if(centerCount < 2) {
 								flip(i + 1);
+								if(sChoice == 0) flipback = i + 1;
+								else if(sChoice == 1) flipback2 = i + 1;
+								sChoice++;
 								centerCount++;
 								if(centerCount == 2) enableButtons("disable", "");
 							}
@@ -291,6 +276,7 @@ public class Board extends JPanel {
 	}
 	
 	public class robberSwitch implements ActionListener {
+//		int flipback = 0;
 		public void actionPerformed (ActionEvent e) {
 			int one = 0;
 			int two = 0;
@@ -308,11 +294,12 @@ public class Board extends JPanel {
 					players.get(one).assignRole(temp2);
 					players.get(two).assignRole(temp);
 					flip(j + 1);
+					flipback = j + 1;
 					
-					int count = 5;
-					RobberCountdown r = new RobberCountdown(count, j+1);
-					robberTimer = new Timer(1000, r);
-					robberTimer.start();
+//					int count = 5;
+//					RobberCountdown r = new RobberCountdown(count, j+1);
+//					robberTimer = new Timer(1000, r);
+//					robberTimer.start();
 					
 					
 				}
@@ -352,7 +339,7 @@ public class Board extends JPanel {
 	
 	public void flip(int player) {
 		flip = !flip;
-		
+		//~
 		switch(player) {
 			case 1:
 				if (flip) player1.setIcon(new ImageIcon(players.get(0).getImage()));
@@ -436,17 +423,18 @@ public class Board extends JPanel {
 		}
 	}
 	
+	
 	public class RoleCountdown extends JPanel {
-		private long begin = 4000;
-		private long showCard = 9000;
-		private long debate = 2 * 60000;
-		private long seconds = begin;
+		private long beginningDur = 4000;
+		private long showCardDur = 9000;
+		private long roleActionDur = 11000;
+		private long debateDur = 210000;
+		private long seconds = beginningDur;
 		java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("mm:ss");
 		JLabel clock = new JLabel(sdf.format(new Date(seconds)));
 		Timer rcountdown;
 		int phase = 1;
 		int timerTurn = 1;
-		int players = numPlayers;
 		String sound = "everyone.wav";
 		InputStream in;
 		AudioStream audioStream;
@@ -474,16 +462,16 @@ public class Board extends JPanel {
 		
 		
 		public class RoleTimer implements ActionListener {
-			
 			public void actionPerformed(ActionEvent e) {
 				clock.setText(sdf.format(new Date(seconds)));
 				seconds -= 1000;
 				
 				if(phase == 1) {
 					if(timerTurn == 1) {
-						if(seconds == begin - 1000) play(sound);
+						if(seconds == beginningDur - 1000) play(sound);
 					} else {
-						if(seconds == showCard - 1000) {
+						if(seconds == showCardDur - 1000) {
+							System.out.println("fsdf");
 							play(sound);
 							flip(timerTurn - 1);
 						} else if(seconds == 2000) {
@@ -492,20 +480,80 @@ public class Board extends JPanel {
 							play(sound);
 						}
 					}
-				
 				} else if(phase == 2) {
-					if(seconds == showCard) {
-						play(sound);
-						if(timerTurn == 3 || timerTurn == 4) {
-							player1.setEnabled(true);
+					if(seconds == roleActionDur - 1000) {
+						switch(timerTurn) {
+							case 1: //Werewolves' turn
+								play(sound);
+								sound = "w_close.wav";
+								break;
+							case 2: //Seer's turn
+								play(sound);
+								instruction.setVisible(true);
+								for(JButton b : playerButtons) {
+									b.addActionListener(sl);
+								}
+								sound = "s_close.wav";
+								break;
+							case 3: //Robber's turn
+								play(sound);
+								enableButtons("players", "Robber");
+								for(JButton b : playerButtons) {
+									b.addActionListener(rs);
+								}
+								sound = "r_close.wav";
+								break;
+							case 4: //Troublemaker's turn
+								play(sound);
+								enableButtons("players", "Troublemaker");
+								for(JButton b : playerButtons) {
+									b.addActionListener(ts);
+								}
+								sound = "t_close.wav";
+								break;
+						}
+					
+					} else if(seconds == 2000) {
+						switch(timerTurn) {
+							case 2: //Seer's turn
+								play(sound);
+								flip(flipback);
+								if(sChoice == 2) flip(flipback2);
+								for(JButton b : playerButtons) {
+									b.removeActionListener(sl);
+								}
+								break;
+							case 3: //Robber's turn
+								play(sound);
+								flip(flipback);
+								for(JButton b : playerButtons) {
+									b.removeActionListener(rs);
+								}
+								break;
+							case 4: //Troublemaker's turn
+								play(sound);
+								for(JButton b : playerButtons) {
+									b.removeActionListener(ts);
+								}
+								break;
 						}
 					}
 				} else if(phase == 3) {
-					if(seconds == debate - 1000) {
+					
+					if(seconds == debateDur - 1000) {
 						sound = "e_wakeup.wav";
 						play(sound);
+					} else if(seconds == 10000) {
+						sound = "readytovote.wav";
+						play(sound);
+					} else if(seconds == 3000) {
+						sound = "321vote.wav";
+						play(sound);
 					} else if(seconds == 0) {
-						for(int i = 0; i < 8; i++) {
+						for(int i = 0; i < players.size(); i++) {
+							flip(i + 1);
+						}
+						for(int i = 6; i < center.size() + 6; i++) {
 							flip(i);
 						}
 					}
@@ -517,46 +565,66 @@ public class Board extends JPanel {
 					clock.setText(sdf.format(new Date(seconds)));
 					rcountdown.stop();
 					
-					if(phase < 3) {
-						seconds = showCard;
-						if(timerTurn <= players ) {
+					if(phase == 1) {
+						seconds = showCardDur;
+						if(timerTurn - 1 <= numPlayers ) {
 							rcountdown.restart();
 							switch(timerTurn) {
 								case 1:
-									if(phase == 1) sound = "player1.wav";
-									else sound = "s_wakeup.wav";
+									sound = "player1.wav";
 									break;
 								case 2:
-									if(phase == 1) sound = "player2.wav";
-									else sound = "r_wakeup";
+									sound = "player2.wav";
 									break;
 								case 3:
-									if(phase == 1) sound = "player3.wav";
-									else sound = "t_wakeup.wav";
+									sound = "player3.wav";
 									break;
 								case 4:
-									if(phase == 1) sound = "player4.wav";
+									sound = "player4.wav";
 									break;
 								case 5:
-									if(phase == 1) sound = "player5.wav";
+									sound = "player5.wav";
 									break;
 							}
 						
 							timerTurn++;
-//							if((phase == 1 && timerTurn == players) || (phase == 2 && timerTurn == 4)) {
-//								timerTurn = 1;
-//								phase++;
-//								if(phase == 2) sound = "w_wakeup.wav";
-//							}
+							System.out.println("turn " + timerTurn);
+							if(timerTurn - 1 > numPlayers) {
+								timerTurn = 1;
+								seconds = roleActionDur;
+								phase++;
+								sound = "w_wakeup.wav";
+							}
+						}
+					} else if(phase == 2) {
+						seconds = roleActionDur;
+						
+						if(timerTurn <= numPlayers ) {
+							rcountdown.restart();
+							switch(timerTurn) {
+								case 1:
+									sound = "s_wakeup.wav";
+									break;
+								case 2:
+									sound = "r_wakeup.wav";
+									break;
+								case 3:
+									sound = "t_wakeup.wav";
+									break;
+							}
+							timerTurn++;
+							if(timerTurn == 4) {
+								timerTurn = 1;
+								phase++;
+							}
 						}
 					}
+					
 					
 				}
 			}
 		}
 
 	}
-	
-	
 
 }
