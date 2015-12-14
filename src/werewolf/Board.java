@@ -54,25 +54,6 @@ public class Board extends JPanel {
 	SeerAL sl = new SeerAL();
 	RobberAL rl = new RobberAL();
 	TroublemakerAL tl = new TroublemakerAL();
-	
-	
-	/**
-	 * Gets players ArrayList
-	 * @return players ArrayList
-	 * Method was created for Unit Testing 
-	 */
-	public ArrayList<Player> getPlayersList () {
-		return players;
-	}
-	
-	/**
-	 * Gets value of SwitchClicker
-	 * @return value of SwitchClicker
-	 * Method was created for Unit Testing
-	 */
-	public int getSwitchClicker() {
-		return switchClicker;
-	}
 
 	/**
 	 * The constructor of this class 
@@ -325,6 +306,24 @@ public class Board extends JPanel {
 	 */
 	public void setNumPlayers(int n) {
 		numPlayers = n;
+	}
+	
+	/**
+	 * Gets players ArrayList
+	 * @return players ArrayList
+	 * Method was created for Unit Testing 
+	 */
+	public ArrayList<Player> getPlayersList () {
+		return players;
+	}
+	
+	/**
+	 * Gets value of SwitchClicker
+	 * @return value of SwitchClicker
+	 * Method was created for Unit Testing
+	 */
+	public int getSwitchClicker() {
+		return switchClicker;
 	}
 	
 	/**
@@ -701,12 +700,9 @@ public class Board extends JPanel {
 								timerTurn = 1;
 								seconds = debateDur;
 								phase++;
-
 							}
 						}
 					}
-
-
 				}
 			}
 		}

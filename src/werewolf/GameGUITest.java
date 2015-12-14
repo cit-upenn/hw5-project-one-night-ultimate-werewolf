@@ -102,6 +102,61 @@ public class GameGUITest {
 		assertEquals("There should only be 2 boards - setup and game boards", 2, p);
 	}
 	
+	@Test
+	public void seerClickOptions1Test() {
+		boolean enabled = false;
+		GameGUI gui = new GameGUI();
+		gui.setup.threeButton.doClick();
+		gui.board.startButton.doClick();
+		
+		for (JButton p: gui.board.playerButtons) {
+			p.addActionListener(gui.board.sl);
+		}
+		
+		gui.board.seerChoice1.doClick();
+		
+		for (int i = 0; i < gui.board.centerButtons.size(); i++) {
+			if (gui.board.centerButtons.get(i).isEnabled()) {
+				enabled = true;
+			}
+		}
+		assertEquals("Seer should not be able to click center cards", false, enabled);		
+		
+	}
+	
+	@Test
+	public void seerClickOptions2Test() {
+		boolean enabled = false;
+		GameGUI gui = new GameGUI();
+		gui.setup.threeButton.doClick();
+		gui.board.startButton.doClick();
+		
+		for (JButton p: gui.board.playerButtons) {
+			p.addActionListener(gui.board.sl);
+		}
+		
+		gui.board.seerChoice2.doClick();
+		
+		for (int i = 0; i < gui.board.playerButtons.size(); i++) {
+			if (gui.board.playerButtons.get(i).isEnabled()) {
+				enabled = true;
+			}
+		}
+		assertEquals("Seer should not be able to click player cards", false, enabled);		
+		
+	}
+	
+	@Test
+	public void PlayersVSButtonsTest() {
+		GameGUI gui = new GameGUI();
+		Board board = new Board();
+		gui.setup.fiveButton.doClick();
+		gui.board.startButton.doClick();
+		int p = gui.board.getPlayersList().size();
+		int b = gui.board.playerButtons.size();
+		
+		assertEquals("The number of players and number of player buttons should be equal", p, b);
+	}
 	
 	
 	

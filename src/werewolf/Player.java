@@ -7,9 +7,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Player {
-	
-	private int ID;
-	private static int lastAssignedID = 0;
+
 	private Role role, origRole;
 	private String origRoleStr;
 	
@@ -17,8 +15,6 @@ public class Player {
 	 * The constructor 
 	 */
 	public Player() {
-		lastAssignedID++;
-		ID = lastAssignedID;
 		origRoleStr = "";
 	}
 	
@@ -32,19 +28,6 @@ public class Player {
 			origRole = r;
 		}
 		role = r;
-	}
-	
-//	public ArrayList<Integer> wakeUp(int numOfPlayers, Scanner in) {
-//		
-//		return origRole.wakeUp(numOfPlayers, ID, in);
-//	}
-	
-	/**
-	 * Gets ID number of player
-	 * @return ID
-	 */
-	public int getID() {
-		return ID;
 	}
 	
 	/**

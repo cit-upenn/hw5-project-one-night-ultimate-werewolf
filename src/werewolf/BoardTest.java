@@ -20,13 +20,6 @@ public class BoardTest {
 	}
 	
 	@Test
-	public void testPlayerButtonText () {
-		JButton player1 = new JButton();
-		player1.setText("Player 1");
-		assertEquals("player1 JButton will return player1 text", "Player 1", player1.getText());
-	}
-	
-	@Test
 	public void leftPanelNotVisible () {
 		JPanel leftPanel = new JPanel();
 		JTextArea instruction = new JTextArea();
@@ -50,24 +43,5 @@ public class BoardTest {
 		int p = board.getComponentCount();
 		assertEquals("There should be 6 panels on Game Board", 6, p);
 	}
-	
-//	@Test
-//	public void numButtonsPerPlayer() {
-//		Board board = new Board();
-//		board.startButton.doClick();
-//		int pb = 1;
-//		int counter = 0;
-//		for (JButton b : board.playerButtons) {
-//			counter++;
-//		}
-//		for (JButton b : board.centerButtons) {
-//			counter++;
-//		}
-//	}
-	
-	
-	
-	
-	
 
 }
