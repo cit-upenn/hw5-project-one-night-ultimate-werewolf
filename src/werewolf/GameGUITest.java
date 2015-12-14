@@ -75,6 +75,27 @@ public class GameGUITest {
 	}
 	
 	@Test
+	public void switchClickerTest() {
+		GameGUI gui = new GameGUI();
+		gui.setup.threeButton.doClick();
+		gui.board.startButton.doClick();
+
+		for (JButton p: gui.board.playerButtons) {
+			p.addActionListener(gui.board.tl);
+		}
+		
+		gui.board.enableButtons("players", "Troublemaker");
+		
+		for (int i = 0; i < gui.board.playerButtons.size(); i++) {
+			if (gui.board.playerButtons.get(i).isEnabled()) {
+				gui.board.playerButtons.get(i).doClick();
+			}
+		}
+		assertEquals("SwitchClicker should be 2", 2, gui.board.getSwitchClicker());
+	}
+	
+	
+	@Test
 	public void numBoardsTest() {
 		GameGUI gui = new GameGUI();
 		int p = gui.gamePanel.getComponentCount();

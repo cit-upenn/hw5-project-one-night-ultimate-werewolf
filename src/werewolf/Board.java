@@ -64,6 +64,15 @@ public class Board extends JPanel {
 	public ArrayList<Player> getPlayersList () {
 		return players;
 	}
+	
+	/**
+	 * Gets value of SwitchClicker
+	 * @return value of SwitchClicker
+	 * Method was created for Unit Testing
+	 */
+	public int getSwitchClicker() {
+		return switchClicker;
+	}
 
 	/**
 	 * The constructor of this class 

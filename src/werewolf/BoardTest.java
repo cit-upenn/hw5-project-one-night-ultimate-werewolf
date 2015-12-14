@@ -51,19 +51,19 @@ public class BoardTest {
 		assertEquals("There should be 6 panels on Game Board", 6, p);
 	}
 	
-	@Test
-	public void numButtonsPerPlayer() {
-		Board board = new Board();
-		board.startButton.doClick();
-		int pb = 1;
-		int counter = 0;
-		for (JButton b : board.playerButtons) {
-			counter++;
-		}
-		for (JButton b : board.centerButtons) {
-			counter++;
-		}
-	}
+//	@Test
+//	public void numButtonsPerPlayer() {
+//		Board board = new Board();
+//		board.startButton.doClick();
+//		int pb = 1;
+//		int counter = 0;
+//		for (JButton b : board.playerButtons) {
+//			counter++;
+//		}
+//		for (JButton b : board.centerButtons) {
+//			counter++;
+//		}
+//	}
 	
 	
 	
